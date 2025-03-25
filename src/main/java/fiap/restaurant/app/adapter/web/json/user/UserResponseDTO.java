@@ -1,5 +1,6 @@
 package fiap.restaurant.app.adapter.web.json.user;
 
+import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.core.domain.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package fiap.restaurant.app.adapter.web.integration.user;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import fiap.restaurant.app.adapter.web.json.user.AddressDTO;
+import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
 import fiap.restaurant.app.core.domain.UserType;

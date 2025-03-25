@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -40,4 +42,7 @@ public class UserEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private AddressEntity address;
+    
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<RestaurantEntity> restaurants = new ArrayList<>();
 }

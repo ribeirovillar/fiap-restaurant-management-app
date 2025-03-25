@@ -1,6 +1,6 @@
 package fiap.restaurant.app.adapter.web.integration.user;
 
-import fiap.restaurant.app.adapter.web.json.user.AddressDTO;
+import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UpdateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;

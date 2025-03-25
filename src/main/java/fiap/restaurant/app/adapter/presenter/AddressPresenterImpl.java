@@ -1,7 +1,7 @@
 package fiap.restaurant.app.adapter.presenter;
 
 import fiap.restaurant.app.adapter.database.jpa.entity.AddressEntity;
-import fiap.restaurant.app.adapter.web.json.user.AddressDTO;
+import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.core.domain.Address;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +16,7 @@ public class AddressPresenterImpl implements AddressPresenter {
 
         Address.AddressBuilder address = Address.builder();
 
+        address.id(addressDTO.getId());
         address.street(addressDTO.getStreet());
         address.city(addressDTO.getCity());
         address.state(addressDTO.getState());
@@ -33,6 +34,7 @@ public class AddressPresenterImpl implements AddressPresenter {
 
         AddressDTO addressDTO = new AddressDTO();
 
+        addressDTO.setId(address.getId());
         addressDTO.setStreet(address.getStreet());
         addressDTO.setCity(address.getCity());
         addressDTO.setState(address.getState());

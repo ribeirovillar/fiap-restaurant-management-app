@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "a8e7d5fb-c8c8-4e72-a6d4-1fc38e5d8a14",
 		"name": "FIAP Restaurant Management API",
-		"description": "API collection for the FIAP Restaurant Management application, featuring user management and authentication endpoints.",
+		"description": "API collection for the FIAP Restaurant Management application, featuring user management, authentication endpoints, and restaurant management.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -198,6 +198,209 @@
 				}
 			],
 			"description": "Endpoints for authentication and credential management."
+		},
+		{
+			"name": "Restaurant Management",
+			"item": [
+				{
+					"name": "Create Restaurant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"O Restaurante Italiano\",\n  \"cuisineType\": \"ITALIAN\",\n  \"ownerId\": \"{{ownerId}}\",\n  \"address\": {\n    \"street\": \"Rua Augusta, 1500\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"zipCode\": \"01304-001\",\n    \"country\": \"Brazil\"\n  },\n  \"businessHours\": [\n    {\n      \"dayOfWeek\": \"MONDAY\",\n      \"openingTime\": \"11:00\",\n      \"closingTime\": \"22:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"TUESDAY\",\n      \"openingTime\": \"11:00\",\n      \"closingTime\": \"22:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"WEDNESDAY\",\n      \"openingTime\": \"11:00\",\n      \"closingTime\": \"22:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"THURSDAY\",\n      \"openingTime\": \"11:00\",\n      \"closingTime\": \"23:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"FRIDAY\",\n      \"openingTime\": \"11:00\",\n      \"closingTime\": \"23:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"SATURDAY\",\n      \"openingTime\": \"11:00\",\n      \"closingTime\": \"23:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"SUNDAY\",\n      \"openingTime\": \"12:00\",\n      \"closingTime\": \"22:00\",\n      \"closed\": false\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants"
+							]
+						},
+						"description": "Creates a new restaurant with the provided details. The ownerId must refer to a user with OWNER type."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Restaurants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants"
+							]
+						},
+						"description": "Retrieves a list of all restaurants."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Restaurant by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								"{{restaurantId}}"
+							]
+						},
+						"description": "Retrieves a specific restaurant by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Restaurants by Owner ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants/owner/{{ownerId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								"owner",
+								"{{ownerId}}"
+							]
+						},
+						"description": "Retrieves all restaurants owned by a specific user."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Restaurants by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants/search?name=Italiano",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Italiano"
+								}
+							]
+						},
+						"description": "Searches for restaurants by name (partial match)."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Restaurants by Cuisine Type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants/search?cuisineType=ITALIAN",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								"search"
+							],
+							"query": [
+								{
+									"key": "cuisineType",
+									"value": "ITALIAN"
+								}
+							]
+						},
+						"description": "Searches for restaurants by cuisine type."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Restaurant",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"O Restaurante Italiano Renovado\",\n  \"cuisineType\": \"ITALIAN\",\n  \"address\": {\n    \"street\": \"Rua Augusta, 1800\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"zipCode\": \"01304-002\",\n    \"country\": \"Brazil\"\n  },\n  \"businessHours\": [\n    {\n      \"dayOfWeek\": \"MONDAY\",\n      \"openingTime\": \"12:00\",\n      \"closingTime\": \"23:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"TUESDAY\",\n      \"openingTime\": \"12:00\",\n      \"closingTime\": \"23:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"WEDNESDAY\",\n      \"openingTime\": \"12:00\",\n      \"closingTime\": \"23:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"THURSDAY\",\n      \"openingTime\": \"12:00\",\n      \"closingTime\": \"23:30\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"FRIDAY\",\n      \"openingTime\": \"12:00\",\n      \"closingTime\": \"00:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"SATURDAY\",\n      \"openingTime\": \"12:00\",\n      \"closingTime\": \"00:00\",\n      \"closed\": false\n    },\n    {\n      \"dayOfWeek\": \"SUNDAY\",\n      \"closed\": true\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								"{{restaurantId}}"
+							]
+						},
+						"description": "Updates an existing restaurant by its ID. Note that the restaurant ID is in the URL, not in the request body. Only the owner can update the restaurant."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Restaurant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"restaurants",
+								"{{restaurantId}}"
+							]
+						},
+						"description": "Deletes a restaurant by its ID. Only the owner can delete the restaurant."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing restaurants."
 		}
 	],
 	"event": [
@@ -231,6 +434,18 @@
 			"value": "",
 			"type": "string",
 			"description": "The UUID of a user. You should replace this with an actual UUID after creating a user."
+		},
+		{
+			"key": "ownerId",
+			"value": "",
+			"type": "string",
+			"description": "The UUID of a user with OWNER type. You should replace this with an actual UUID after creating an owner."
+		},
+		{
+			"key": "restaurantId",
+			"value": "",
+			"type": "string",
+			"description": "The UUID of a restaurant. You should replace this with an actual UUID after creating a restaurant."
 		}
 	]
 } 
