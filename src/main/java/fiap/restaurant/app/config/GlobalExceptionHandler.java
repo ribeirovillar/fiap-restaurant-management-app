@@ -36,7 +36,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            UpdateUserException.class
     })
     public ResponseEntity<ErrorResponseDto> handleEntityNotFound(RuntimeException ex, WebRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.NOT_FOUND);
@@ -67,13 +68,6 @@ public class GlobalExceptionHandler {
                 .orElse("Validation error");
         
         return buildErrorResponse(new Exception(errorMessage), request, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({
-            UpdateUserException.class
-    })
-    public ResponseEntity<ErrorResponseDto> handlePersistenceException(RuntimeException ex, WebRequest request) {
-        return buildErrorResponse(ex, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(Exception.class)

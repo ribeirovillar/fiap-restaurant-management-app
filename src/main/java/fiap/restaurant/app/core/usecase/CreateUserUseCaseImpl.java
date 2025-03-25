@@ -2,7 +2,6 @@ package fiap.restaurant.app.core.usecase;
 
 import fiap.restaurant.app.core.domain.User;
 import fiap.restaurant.app.core.exception.DuplicatedDataException;
-import fiap.restaurant.app.core.exception.EmailFormatException;
 import fiap.restaurant.app.core.gateway.UserGateway;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,9 +17,7 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 
     @Override
     public User execute(User user) {
-        if (!user.isValidEmail()) {
-            throw new EmailFormatException("Invalid email format: " + user.getEmail());
-        }
+        user.validateForCreation();
 
         if (userGateway.existsByLogin(user.getLogin())) {
             throw new DuplicatedDataException("Login already exists: " + user.getLogin());

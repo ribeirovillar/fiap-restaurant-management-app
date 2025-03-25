@@ -30,6 +30,8 @@ public class UpdatePasswordUseCaseImpl implements UpdatePasswordUseCase {
         User user = userGateway.findByLogin(login)
                 .orElseThrow(() -> new InvalidCredentialException("User not found"));
         
+        user.validatePassword(newPassword);
+        
         user.setPassword(passwordEncoder.encode(newPassword));
         
         userGateway.update(user);
