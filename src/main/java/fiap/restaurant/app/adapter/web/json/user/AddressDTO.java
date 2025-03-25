@@ -1,4 +1,4 @@
-package fiap.restaurant.app.adapter.web.json;
+package fiap.restaurant.app.adapter.web.json.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package fiap.restaurant.app.adapter.web.json;
+package fiap.restaurant.app.adapter.web.json.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseDTO {
+public class PasswordResponseDTO {
     private String message;
     private boolean success;
 } 

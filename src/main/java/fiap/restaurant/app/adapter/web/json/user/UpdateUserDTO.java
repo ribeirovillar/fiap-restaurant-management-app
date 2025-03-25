@@ -1,4 +1,4 @@
-package fiap.restaurant.app.adapter.web.json;
+package fiap.restaurant.app.adapter.web.json.user;
 
 import fiap.restaurant.app.core.domain.UserType;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserDTO {
+public class UpdateUserDTO {
     private String name;
     private String email;
     private String login;
     private AddressDTO address;
     private UserType userType;
-    private String password;
 }

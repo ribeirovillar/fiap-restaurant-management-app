@@ -1,6 +1,6 @@
 package fiap.restaurant.app.config;
 
-import fiap.restaurant.app.adapter.web.json.ErrorResponseDto;
+import fiap.restaurant.app.adapter.web.json.user.ErrorResponseDto;
 import fiap.restaurant.app.core.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -37,21 +37,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             UserNotFoundException.class,
-            UpdateUserException.class
+            UpdateUserException.class,
+            RestaurantNotFoundException.class
     })
     public ResponseEntity<ErrorResponseDto> handleEntityNotFound(RuntimeException ex, WebRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({
-            InvalidCredentialException.class
+            InvalidCredentialException.class,
+            UnauthorizedOperationException.class
     })
     public ResponseEntity<ErrorResponseDto> handleUnauthorized(RuntimeException ex, WebRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({
-            EmailFormatException.class
+            EmailFormatException.class,
+            IllegalArgumentException.class
     })
     public ResponseEntity<ErrorResponseDto> handleBadRequest(RuntimeException ex, WebRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);

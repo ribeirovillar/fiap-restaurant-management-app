@@ -1,7 +1,7 @@
 package fiap.restaurant.app.adapter.web;
 
 import fiap.restaurant.app.adapter.presenter.UserPresenter;
-import fiap.restaurant.app.adapter.web.json.*;
+import fiap.restaurant.app.adapter.web.json.user.*;
 import fiap.restaurant.app.core.controller.UserController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

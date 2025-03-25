@@ -1,4 +1,4 @@
-package fiap.restaurant.app.adapter.web.json;
+package fiap.restaurant.app.adapter.web.json.user;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

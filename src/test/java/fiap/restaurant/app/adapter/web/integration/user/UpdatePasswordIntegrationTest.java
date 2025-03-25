@@ -1,9 +1,9 @@
 package fiap.restaurant.app.adapter.web.integration.user;
 
-import fiap.restaurant.app.adapter.web.json.CreateUserDTO;
-import fiap.restaurant.app.adapter.web.json.LoginRequestDTO;
-import fiap.restaurant.app.adapter.web.json.UpdatePasswordDTO;
-import fiap.restaurant.app.adapter.web.json.UserResponseDTO;
+import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
+import fiap.restaurant.app.adapter.web.json.user.LoginRequestDTO;
+import fiap.restaurant.app.adapter.web.json.user.UpdatePasswordDTO;
+import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
 import fiap.restaurant.app.core.domain.UserType;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
