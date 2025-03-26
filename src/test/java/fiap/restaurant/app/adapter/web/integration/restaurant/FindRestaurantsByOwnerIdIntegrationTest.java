@@ -19,10 +19,8 @@ public class FindRestaurantsByOwnerIdIntegrationTest extends BaseRestaurantInteg
 
     @Test
     public void findRestaurantsByOwnerId_WithValidOwnerId_ReturnsOwnerRestaurants() throws Exception {
-        // Create owner
         UUID ownerId = createTestOwner();
         
-        // Create first restaurant for this owner
         CreateRestaurantDTO createDTO1 = createRestaurantDTO(ownerId);
         createDTO1.setName("Owner Restaurant 1");
         
@@ -31,7 +29,6 @@ public class FindRestaurantsByOwnerIdIntegrationTest extends BaseRestaurantInteg
                 .content(objectMapper.writeValueAsString(createDTO1)))
                 .andExpect(status().isCreated());
         
-        // Create second restaurant for this owner
         CreateRestaurantDTO createDTO2 = createRestaurantDTO(ownerId);
         createDTO2.setName("Owner Restaurant 2");
         
@@ -40,7 +37,6 @@ public class FindRestaurantsByOwnerIdIntegrationTest extends BaseRestaurantInteg
                 .content(objectMapper.writeValueAsString(createDTO2)))
                 .andExpect(status().isCreated());
         
-        // Create another owner and restaurant
         UUID differentOwnerId = createTestOwner();
         CreateRestaurantDTO differentOwnerDTO = createRestaurantDTO(differentOwnerId);
         differentOwnerDTO.setName("Different Owner Restaurant");
@@ -50,7 +46,6 @@ public class FindRestaurantsByOwnerIdIntegrationTest extends BaseRestaurantInteg
                 .content(objectMapper.writeValueAsString(differentOwnerDTO)))
                 .andExpect(status().isCreated());
         
-        // Find restaurants by owner ID
         MvcResult findResult = mockMvc.perform(get("/api/v1/restaurants/owner/{ownerId}", ownerId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -58,7 +53,7 @@ public class FindRestaurantsByOwnerIdIntegrationTest extends BaseRestaurantInteg
         
         List<RestaurantDTO> restaurants = objectMapper.readValue(
                 findResult.getResponse().getContentAsString(),
-                new TypeReference<List<RestaurantDTO>>() {});
+                new TypeReference<>() {});
         
         assertNotNull(restaurants);
         assertEquals(2, restaurants.size());
@@ -81,7 +76,7 @@ public class FindRestaurantsByOwnerIdIntegrationTest extends BaseRestaurantInteg
         
         List<RestaurantDTO> restaurants = objectMapper.readValue(
                 findResult.getResponse().getContentAsString(),
-                new TypeReference<List<RestaurantDTO>>() {});
+                new TypeReference<>() {});
         
         assertNotNull(restaurants);
         assertTrue(restaurants.isEmpty());

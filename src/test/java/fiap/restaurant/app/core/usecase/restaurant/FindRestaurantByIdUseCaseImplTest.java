@@ -33,7 +33,6 @@ class FindRestaurantByIdUseCaseImplTest {
     
     @Test
     void shouldFindRestaurantByIdSuccessfully() {
-        // Given
         UUID restaurantId = UUID.randomUUID();
         UUID ownerId = UUID.randomUUID();
         
@@ -55,10 +54,8 @@ class FindRestaurantByIdUseCaseImplTest {
         
         when(restaurantGateway.findById(restaurantId)).thenReturn(Optional.of(expectedRestaurant));
         
-        // When
         Restaurant result = findRestaurantByIdUseCase.execute(restaurantId);
         
-        // Then
         assertNotNull(result);
         assertEquals(restaurantId, result.getId());
         assertEquals("Test Restaurant", result.getName());
@@ -70,13 +67,11 @@ class FindRestaurantByIdUseCaseImplTest {
     
     @Test
     void shouldThrowExceptionWhenRestaurantNotFound() {
-        // Given
         UUID nonExistingId = UUID.randomUUID();
         
         when(restaurantGateway.findById(nonExistingId)).thenReturn(Optional.empty());
         
-        // When & Then
-        RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class, 
+        RestaurantNotFoundException exception = assertThrows(RestaurantNotFoundException.class,
                 () -> findRestaurantByIdUseCase.execute(nonExistingId));
         
         assertEquals("Restaurant not found with id: " + nonExistingId, exception.getMessage());

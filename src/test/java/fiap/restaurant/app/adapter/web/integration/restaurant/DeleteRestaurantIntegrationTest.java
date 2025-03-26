@@ -15,7 +15,6 @@ public class DeleteRestaurantIntegrationTest extends BaseRestaurantIntegrationTe
 
     @Test
     public void deleteRestaurant_WithValidId_ReturnsNoContent() throws Exception {
-        // Create restaurant to delete
         UUID ownerId = createTestOwner();
         CreateRestaurantDTO createDTO = createRestaurantDTO(ownerId);
         
@@ -29,12 +28,10 @@ public class DeleteRestaurantIntegrationTest extends BaseRestaurantIntegrationTe
                 createResult.getResponse().getContentAsString(),
                 RestaurantDTO.class);
         
-        // Delete restaurant
         mockMvc.perform(delete("/api/v1/restaurants/{id}", createdRestaurant.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         
-        // Verify restaurant is deleted
         mockMvc.perform(get("/api/v1/restaurants/{id}", createdRestaurant.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

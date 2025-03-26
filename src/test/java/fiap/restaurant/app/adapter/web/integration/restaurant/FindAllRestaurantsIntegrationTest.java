@@ -19,7 +19,6 @@ public class FindAllRestaurantsIntegrationTest extends BaseRestaurantIntegration
 
     @Test
     public void findAllRestaurants_ReturnsAllRestaurants() throws Exception {
-        // Create first restaurant
         UUID ownerId1 = createTestOwner();
         CreateRestaurantDTO createDTO1 = createRestaurantDTO(ownerId1);
         createDTO1.setName("Test Restaurant 1");
@@ -29,7 +28,6 @@ public class FindAllRestaurantsIntegrationTest extends BaseRestaurantIntegration
                 .content(objectMapper.writeValueAsString(createDTO1)))
                 .andExpect(status().isCreated());
         
-        // Create second restaurant
         UUID ownerId2 = createTestOwner();
         CreateRestaurantDTO createDTO2 = createRestaurantDTO(ownerId2);
         createDTO2.setName("Test Restaurant 2");
@@ -39,7 +37,6 @@ public class FindAllRestaurantsIntegrationTest extends BaseRestaurantIntegration
                 .content(objectMapper.writeValueAsString(createDTO2)))
                 .andExpect(status().isCreated());
         
-        // Find all restaurants
         MvcResult findResult = mockMvc.perform(get("/api/v1/restaurants")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -47,12 +44,11 @@ public class FindAllRestaurantsIntegrationTest extends BaseRestaurantIntegration
         
         List<RestaurantDTO> restaurants = objectMapper.readValue(
                 findResult.getResponse().getContentAsString(),
-                new TypeReference<List<RestaurantDTO>>() {});
+                new TypeReference<>() {});
         
         assertNotNull(restaurants);
-        assertTrue(restaurants.size() >= 2); // There might be more than our created restaurants in test database
+        assertTrue(restaurants.size() >= 2);
         
-        // Check if our created restaurants are in the list
         boolean foundRestaurant1 = false;
         boolean foundRestaurant2 = false;
         

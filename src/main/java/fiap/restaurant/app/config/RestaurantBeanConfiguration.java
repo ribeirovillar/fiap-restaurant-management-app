@@ -44,24 +44,19 @@ public class RestaurantBeanConfiguration {
 
     @Bean
     public UpdateRestaurantUseCase updateRestaurantUseCase(RestaurantGateway restaurantGateway) {
-        return new UpdateRestaurantUseCaseImpl(restaurantGateway);
+        return new UpdateRestaurantUseCaseImpl(restaurantGateway, findRestaurantByIdUseCase(restaurantGateway));
     }
 
     @Bean
     public DeleteRestaurantUseCase deleteRestaurantUseCase(RestaurantGateway restaurantGateway) {
-        return new DeleteRestaurantUseCaseImpl(restaurantGateway);
+        return new DeleteRestaurantUseCaseImpl(restaurantGateway, findRestaurantByIdUseCase(restaurantGateway));
     }
-    
+
     @Bean
     public FindUserByLoginUseCase findUserByLoginUseCase(UserGateway userGateway) {
         return new FindUserByLoginUseCase(userGateway);
     }
-    
-    @Bean
-    public ValidateRestaurantOwnerUseCase validateRestaurantOwnerUseCase(FindRestaurantByIdUseCase findRestaurantByIdUseCase) {
-        return new ValidateRestaurantOwnerUseCase(findRestaurantByIdUseCase);
-    }
-    
+
     @Bean
     public RestaurantController restaurantController(
             CreateRestaurantUseCase createRestaurantUseCase,
@@ -72,9 +67,8 @@ public class RestaurantBeanConfiguration {
             FindRestaurantsByCuisineTypeUseCase findRestaurantsByCuisineTypeUseCase,
             UpdateRestaurantUseCase updateRestaurantUseCase,
             DeleteRestaurantUseCase deleteRestaurantUseCase,
-            FindUserByIdUseCase findUserByIdUseCase,
-            ValidateRestaurantOwnerUseCase validateRestaurantOwnerUseCase) {
-        
+            FindUserByIdUseCase findUserByIdUseCase) {
+
         return new RestaurantController(
                 createRestaurantUseCase,
                 findRestaurantByIdUseCase,
@@ -84,7 +78,6 @@ public class RestaurantBeanConfiguration {
                 findRestaurantsByCuisineTypeUseCase,
                 updateRestaurantUseCase,
                 deleteRestaurantUseCase,
-                findUserByIdUseCase,
-                validateRestaurantOwnerUseCase);
+                findUserByIdUseCase);
     }
 } 

@@ -125,7 +125,7 @@ public class UpdateRestaurantIntegrationTest extends BaseRestaurantIntegrationTe
         updateDTO.setName("Updated Restaurant Name");
         updateDTO.setCuisineType(CuisineType.MEXICAN);
         updateDTO.setBusinessHours(List.of(
-            createBusinessHourDTO(DayOfWeek.MONDAY, "18:00", "10:00", false) // Closing before opening
+            createBusinessHourDTO(DayOfWeek.MONDAY, "18:00", "10:00", false)
         ));
         
         mockMvc.perform(put("/api/v1/restaurants/{id}", createdRestaurant.getId())
@@ -137,7 +137,6 @@ public class UpdateRestaurantIntegrationTest extends BaseRestaurantIntegrationTe
     
     @Test
     public void updateRestaurant_WithNonOwner_ReturnsUnauthorized() throws Exception {
-        // Create first owner and restaurant
         UUID ownerId1 = createTestOwner();
         CreateRestaurantDTO createDTO = createRestaurantDTO(ownerId1);
         

@@ -34,7 +34,6 @@ class FindRestaurantsByNameUseCaseImplTest {
     
     @Test
     void shouldReturnRestaurantsMatchingName() {
-        // Given
         String searchName = "Pizza";
         
         User owner = User.builder()
@@ -61,10 +60,8 @@ class FindRestaurantsByNameUseCaseImplTest {
         
         when(restaurantGateway.findByName(searchName)).thenReturn(expectedRestaurants);
         
-        // When
         List<Restaurant> result = findRestaurantsByNameUseCase.execute(searchName);
         
-        // Then
         assertNotNull(result);
         assertEquals(2, result.size());
         
@@ -77,15 +74,12 @@ class FindRestaurantsByNameUseCaseImplTest {
     
     @Test
     void shouldReturnEmptyListWhenNoRestaurantsMatchName() {
-        // Given
         String searchName = "NonExistentName";
         
         when(restaurantGateway.findByName(searchName)).thenReturn(Collections.emptyList());
         
-        // When
         List<Restaurant> result = findRestaurantsByNameUseCase.execute(searchName);
         
-        // Then
         assertNotNull(result);
         assertTrue(result.isEmpty());
         

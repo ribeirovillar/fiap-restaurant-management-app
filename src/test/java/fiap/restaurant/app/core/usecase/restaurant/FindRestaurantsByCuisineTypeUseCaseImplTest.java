@@ -34,7 +34,6 @@ class FindRestaurantsByCuisineTypeUseCaseImplTest {
     
     @Test
     void shouldReturnRestaurantsMatchingCuisineType() {
-        // Given
         String cuisineType = CuisineType.ITALIAN.name();
         
         User owner = User.builder()
@@ -61,10 +60,8 @@ class FindRestaurantsByCuisineTypeUseCaseImplTest {
         
         when(restaurantGateway.findByCuisineType(cuisineType)).thenReturn(expectedRestaurants);
         
-        // When
         List<Restaurant> result = findRestaurantsByCuisineTypeUseCase.execute(cuisineType);
         
-        // Then
         assertNotNull(result);
         assertEquals(2, result.size());
         
@@ -77,15 +74,12 @@ class FindRestaurantsByCuisineTypeUseCaseImplTest {
     
     @Test
     void shouldReturnEmptyListWhenNoRestaurantsMatchCuisineType() {
-        // Given
         String cuisineType = CuisineType.JAPANESE.name();
         
         when(restaurantGateway.findByCuisineType(cuisineType)).thenReturn(Collections.emptyList());
         
-        // When
         List<Restaurant> result = findRestaurantsByCuisineTypeUseCase.execute(cuisineType);
         
-        // Then
         assertNotNull(result);
         assertTrue(result.isEmpty());
         

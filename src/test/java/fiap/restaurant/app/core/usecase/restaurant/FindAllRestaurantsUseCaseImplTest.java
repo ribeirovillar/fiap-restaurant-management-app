@@ -34,7 +34,6 @@ class FindAllRestaurantsUseCaseImplTest {
     
     @Test
     void shouldReturnAllRestaurants() {
-        // Given
         UUID ownerId1 = UUID.randomUUID();
         User owner1 = User.builder()
                 .id(ownerId1)
@@ -67,10 +66,8 @@ class FindAllRestaurantsUseCaseImplTest {
         
         when(restaurantGateway.findAll()).thenReturn(expectedRestaurants);
         
-        // When
         List<Restaurant> result = findAllRestaurantsUseCase.execute();
         
-        // Then
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(expectedRestaurants, result);
@@ -80,13 +77,10 @@ class FindAllRestaurantsUseCaseImplTest {
     
     @Test
     void shouldReturnEmptyListWhenNoRestaurantsExist() {
-        // Given
         when(restaurantGateway.findAll()).thenReturn(Collections.emptyList());
         
-        // When
         List<Restaurant> result = findAllRestaurantsUseCase.execute();
         
-        // Then
         assertNotNull(result);
         assertTrue(result.isEmpty());
         

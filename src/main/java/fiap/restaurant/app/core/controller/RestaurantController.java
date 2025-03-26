@@ -4,7 +4,6 @@ import fiap.restaurant.app.core.domain.Restaurant;
 import fiap.restaurant.app.core.domain.User;
 import fiap.restaurant.app.core.usecase.restaurant.*;
 import fiap.restaurant.app.core.usecase.user.FindUserByIdUseCase;
-import fiap.restaurant.app.core.usecase.user.FindUserByLoginUseCase;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +19,6 @@ public class RestaurantController {
     private final UpdateRestaurantUseCase updateRestaurantUseCase;
     private final DeleteRestaurantUseCase deleteRestaurantUseCase;
     private final FindUserByIdUseCase findUserByIdUseCase;
-    private final ValidateRestaurantOwnerUseCase validateRestaurantOwnerUseCase;
 
     public RestaurantController(
             CreateRestaurantUseCase createRestaurantUseCase,
@@ -31,8 +29,7 @@ public class RestaurantController {
             FindRestaurantsByCuisineTypeUseCase findRestaurantsByCuisineTypeUseCase,
             UpdateRestaurantUseCase updateRestaurantUseCase,
             DeleteRestaurantUseCase deleteRestaurantUseCase,
-            FindUserByIdUseCase findUserByIdUseCase,
-            ValidateRestaurantOwnerUseCase validateRestaurantOwnerUseCase) {
+            FindUserByIdUseCase findUserByIdUseCase) {
         this.createRestaurantUseCase = createRestaurantUseCase;
         this.findRestaurantByIdUseCase = findRestaurantByIdUseCase;
         this.findAllRestaurantsUseCase = findAllRestaurantsUseCase;
@@ -42,12 +39,9 @@ public class RestaurantController {
         this.updateRestaurantUseCase = updateRestaurantUseCase;
         this.deleteRestaurantUseCase = deleteRestaurantUseCase;
         this.findUserByIdUseCase = findUserByIdUseCase;
-        this.validateRestaurantOwnerUseCase = validateRestaurantOwnerUseCase;
     }
 
     public Restaurant create(Restaurant restaurant) {
-        validateRestaurantOwnerUseCase.validateForCreation(restaurant.getOwner());
-        restaurant.validateForCreation();
         return createRestaurantUseCase.execute(restaurant);
     }
     
@@ -75,17 +69,11 @@ public class RestaurantController {
         return findRestaurantsByCuisineTypeUseCase.execute(cuisineType);
     }
 
-    public Restaurant update(Restaurant restaurant) {
-        Restaurant existingRestaurant = findById(restaurant.getId());
-        validateRestaurantOwnerUseCase.validateForUpdate(restaurant.getOwner(), existingRestaurant.getOwner());
-        restaurant.validateForUpdate(existingRestaurant);
-        return updateRestaurantUseCase.execute(restaurant);
+    public Restaurant update(UUID id, Restaurant restaurant) {
+        return updateRestaurantUseCase.execute(id, restaurant);
     }
 
     public void delete(UUID id) {
-        Restaurant restaurant = findById(id);
-        validateRestaurantOwnerUseCase.validateForDelete(restaurant.getOwner());
-        restaurant.validateForDelete();
         deleteRestaurantUseCase.execute(id);
     }
 } 

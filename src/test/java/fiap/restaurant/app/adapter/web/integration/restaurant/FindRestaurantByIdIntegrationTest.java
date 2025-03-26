@@ -19,7 +19,6 @@ public class FindRestaurantByIdIntegrationTest extends BaseRestaurantIntegration
 
     @Test
     public void findRestaurantById_WithValidId_ReturnsRestaurant() throws Exception {
-        // Create restaurant
         UUID ownerId = createTestOwner();
         CreateRestaurantDTO createDTO = createRestaurantDTO(ownerId);
         
@@ -33,7 +32,6 @@ public class FindRestaurantByIdIntegrationTest extends BaseRestaurantIntegration
                 createResult.getResponse().getContentAsString(),
                 RestaurantDTO.class);
         
-        // Find restaurant by ID
         MvcResult findResult = mockMvc.perform(get("/api/v1/restaurants/{id}", createdRestaurant.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

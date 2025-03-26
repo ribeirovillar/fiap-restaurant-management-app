@@ -68,7 +68,7 @@ public class RestaurantApiController {
     public ResponseEntity<List<RestaurantDTO>> searchRestaurants(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String cuisineType) {
-        
+
         List<Restaurant> restaurants;
         if (name != null && !name.isEmpty()) {
             restaurants = restaurantController.findByName(name);
@@ -77,24 +77,19 @@ public class RestaurantApiController {
         } else {
             restaurants = restaurantController.findAll();
         }
-        
+
         return ResponseEntity.ok(restaurantPresenter.toDTOList(restaurants));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RestaurantDTO> updateRestaurant(
-            @PathVariable UUID id, 
+            @PathVariable UUID id,
             @RequestBody @Valid UpdateRestaurantDTO updateRestaurantDTO) {
-        
+
         Restaurant restaurant = restaurantPresenter.toUpdateDomain(updateRestaurantDTO, null);
-        Restaurant existingRestaurant = restaurantController.findById(id);
-        
-        // Set properties from existing restaurant that shouldn't be modified
-        restaurant.setId(id);
-        restaurant.setOwner(existingRestaurant.getOwner());
-        
-        Restaurant updatedRestaurant = restaurantController.update(restaurant);
-        
+
+        Restaurant updatedRestaurant = restaurantController.update(id, restaurant);
+
         return ResponseEntity.ok(restaurantPresenter.toDTO(updatedRestaurant));
     }
 

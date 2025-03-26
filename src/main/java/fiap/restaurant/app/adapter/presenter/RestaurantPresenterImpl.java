@@ -96,10 +96,8 @@ public class RestaurantPresenterImpl implements RestaurantPresenter {
     
     @Override
     public void updateBusinessHours(RestaurantEntity entity, List<BusinessHours> businessHours) {
-        // Clear existing business hours
         entity.getBusinessHours().clear();
         
-        // Add new business hours
         if (businessHours != null) {
             businessHours.forEach(hours -> {
                 BusinessHoursEntity hoursEntity = businessHoursPresenter.toEntity(hours, null);
@@ -143,7 +141,6 @@ public class RestaurantPresenterImpl implements RestaurantPresenter {
             builder.address(addressPresenter.mapToDomain(dto.getAddress()));
         }
 
-        // Only set these fields if existingRestaurant is provided
         if (existingRestaurant != null) {
             builder.id(existingRestaurant.getId())
                   .owner(existingRestaurant.getOwner())
