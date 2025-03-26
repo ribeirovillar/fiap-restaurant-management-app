@@ -10,6 +10,7 @@ import fiap.restaurant.app.core.domain.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/restaurants")
 @Tag(name = "Restaurants", description = "API for restaurant management")
 @RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = lombok.AccessLevel.PRIVATE)
 public class RestaurantApiController {
 
     private final RestaurantController restaurantController;

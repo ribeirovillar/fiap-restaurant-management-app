@@ -1,4 +1,4 @@
-package fiap.restaurant.app.config;
+package fiap.restaurant.app.configuration;
 
 import fiap.restaurant.app.adapter.web.json.user.ErrorResponseDto;
 import fiap.restaurant.app.core.exception.*;

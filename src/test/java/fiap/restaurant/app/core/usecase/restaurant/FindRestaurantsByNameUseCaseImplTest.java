@@ -24,14 +24,14 @@ class FindRestaurantsByNameUseCaseImplTest {
 
     @Mock
     private RestaurantGateway restaurantGateway;
-    
+
     private FindRestaurantsByNameUseCaseImpl findRestaurantsByNameUseCase;
-    
+
     @BeforeEach
     void setUp() {
         findRestaurantsByNameUseCase = new FindRestaurantsByNameUseCaseImpl(restaurantGateway);
     }
-    
+
     @Test
     void shouldReturnRestaurantsMatchingName() {
         String searchName = "Pizza";

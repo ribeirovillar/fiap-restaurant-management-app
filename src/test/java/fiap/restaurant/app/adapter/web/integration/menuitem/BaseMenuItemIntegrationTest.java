@@ -1,9 +1,11 @@
-package fiap.restaurant.app.adapter.web.integration.restaurant;
+package fiap.restaurant.app.adapter.web.integration.menuitem;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
+import fiap.restaurant.app.adapter.web.json.menuitem.UpsertMenuItemDTO;
 import fiap.restaurant.app.adapter.web.json.restaurant.BusinessHoursDTO;
 import fiap.restaurant.app.adapter.web.json.restaurant.CreateRestaurantDTO;
+import fiap.restaurant.app.adapter.web.json.restaurant.RestaurantDTO;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
 import fiap.restaurant.app.configuration.TestSecurityConfig;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -33,14 +36,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Import(TestSecurityConfig.class)
 @Transactional
-public abstract class BaseRestaurantIntegrationTest {
+public abstract class BaseMenuItemIntegrationTest {
 
     @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
     protected ObjectMapper objectMapper;
-
+    
     protected UUID createTestOwner() throws Exception {
         CreateUserDTO ownerDTO = new CreateUserDTO();
         ownerDTO.setName("Test Restaurant Owner");
@@ -71,15 +74,26 @@ public abstract class BaseRestaurantIntegrationTest {
         return createdOwner.getId();
     }
     
-    protected CreateRestaurantDTO createRestaurantDTO(UUID ownerId) {
+    protected UUID createTestRestaurant(UUID ownerId) throws Exception {
         CreateRestaurantDTO restaurantDTO = new CreateRestaurantDTO();
         restaurantDTO.setName("Test Restaurant");
         restaurantDTO.setCuisineType(CuisineType.ITALIAN);
         restaurantDTO.setOwnerId(ownerId);
         restaurantDTO.setAddress(createAddressDTO());
         restaurantDTO.setBusinessHours(createBusinessHours());
-                
-        return restaurantDTO;
+        
+        MvcResult result = mockMvc.perform(post("/api/v1/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(restaurantDTO)))
+                .andExpect(status().isCreated())
+                .andReturn();
+        
+        RestaurantDTO createdRestaurant = objectMapper.readValue(
+                result.getResponse().getContentAsString(),
+                RestaurantDTO.class
+        );
+        
+        return createdRestaurant.getId();
     }
     
     protected AddressDTO createAddressDTO() {
@@ -95,10 +109,7 @@ public abstract class BaseRestaurantIntegrationTest {
     protected List<BusinessHoursDTO> createBusinessHours() {
         List<BusinessHoursDTO> businessHours = new ArrayList<>();
         
-        // Monday
         businessHours.add(createBusinessHourDTO(DayOfWeek.MONDAY, "09:00", "18:00", false));
-        
-        // Tuesday
         businessHours.add(createBusinessHourDTO(DayOfWeek.TUESDAY, "09:00", "18:00", false));
         
         return businessHours;
@@ -115,5 +126,15 @@ public abstract class BaseRestaurantIntegrationTest {
         
         businessHoursDTO.setClosed(isClosed);
         return businessHoursDTO;
+    }
+    
+    protected UpsertMenuItemDTO createMenuItemDTO() {
+        UpsertMenuItemDTO menuItemDTO = new UpsertMenuItemDTO();
+        menuItemDTO.setName("Test Menu Item");
+        menuItemDTO.setDescription("This is a description for the test menu item that is sufficiently long");
+        menuItemDTO.setPrice(new BigDecimal("15.99"));
+        menuItemDTO.setAvailableForTakeout(true);
+        menuItemDTO.setPhotoPath("/images/test.jpg");
+        return menuItemDTO;
     }
 } 

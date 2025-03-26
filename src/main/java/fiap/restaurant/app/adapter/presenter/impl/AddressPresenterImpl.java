@@ -1,6 +1,7 @@
-package fiap.restaurant.app.adapter.presenter;
+package fiap.restaurant.app.adapter.presenter.impl;
 
 import fiap.restaurant.app.adapter.database.jpa.entity.AddressEntity;
+import fiap.restaurant.app.adapter.presenter.AddressPresenter;
 import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.core.domain.Address;
 import org.springframework.stereotype.Component;

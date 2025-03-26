@@ -1,7 +1,9 @@
-package fiap.restaurant.app.adapter.presenter;
+package fiap.restaurant.app.adapter.presenter.impl;
 
 import fiap.restaurant.app.adapter.database.jpa.entity.AddressEntity;
 import fiap.restaurant.app.adapter.database.jpa.entity.UserEntity;
+import fiap.restaurant.app.adapter.presenter.AddressPresenter;
+import fiap.restaurant.app.adapter.presenter.UserPresenter;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UpdateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;

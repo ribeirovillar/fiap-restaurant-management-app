@@ -1,8 +1,8 @@
-package fiap.restaurant.app.config;
+package fiap.restaurant.app.configuration;
 
 import fiap.restaurant.app.adapter.database.jpa.UserJpaGateway;
 import fiap.restaurant.app.adapter.database.jpa.repository.UserRepository;
-import fiap.restaurant.app.adapter.presenter.UserPresenterImpl;
+import fiap.restaurant.app.adapter.presenter.impl.UserPresenterImpl;
 import fiap.restaurant.app.core.controller.UserController;
 import fiap.restaurant.app.core.gateway.UserGateway;
 import fiap.restaurant.app.core.usecase.user.*;

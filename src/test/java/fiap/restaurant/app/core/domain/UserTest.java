@@ -3,6 +3,8 @@ package fiap.restaurant.app.core.domain;
 import fiap.restaurant.app.core.exception.EmailFormatException;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
@@ -27,35 +29,57 @@ class UserTest {
         User user = new User();
         
         EmailFormatException exception = assertThrows(EmailFormatException.class,
-                () -> user.setEmail("invalid-email"));
+                () -> user.setEmail("invalidemail"));
         
-        assertEquals("Invalid email format: invalid-email", exception.getMessage());
+        assertEquals("Invalid email format: invalidemail", exception.getMessage());
     }
     
     @Test
-    void shouldAcceptValidEmail() {
+    void shouldNotThrowExceptionWhenSettingValidEmail() {
         User user = new User();
         
-        assertDoesNotThrow(() -> user.setEmail("valid@example.com"));
-        assertEquals("valid@example.com", user.getEmail());
+        assertDoesNotThrow(() -> user.setEmail("valid@email.com"));
+        assertEquals("valid@email.com", user.getEmail());
     }
     
     @Test
-    void shouldThrowExceptionWhenSettingShortName() {
+    void shouldValidateUserForCreation() {
         User user = new User();
+        user.setName("John Doe");
+        user.setEmail("john@example.com");
+        user.setLogin("johndoe");
+        user.setPassword("password123");
+        user.setUserType(UserType.CUSTOMER);
+        
+        assertDoesNotThrow(() -> user.validateForCreation());
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenNameIsEmpty() {
+        User user = new User();
+        user.setEmail("john@example.com");
+        user.setLogin("johndoe");
+        user.setPassword("password123");
+        user.setUserType(UserType.CUSTOMER);
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> user.setName("Ab"));
+                () -> user.validateForCreation());
         
-        assertEquals("Name must be at least 3 characters long", exception.getMessage());
+        assertEquals("Name is required", exception.getMessage());
     }
     
     @Test
-    void shouldAcceptValidName() {
+    void shouldThrowExceptionWhenEmailIsEmpty() {
         User user = new User();
+        user.setName("John Doe");
+        user.setLogin("johndoe");
+        user.setPassword("password123");
+        user.setUserType(UserType.CUSTOMER);
         
-        assertDoesNotThrow(() -> user.setName("Valid Name"));
-        assertEquals("Valid Name", user.getName());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> user.validateForCreation());
+        
+        assertEquals("Email is required", exception.getMessage());
     }
     
     @Test

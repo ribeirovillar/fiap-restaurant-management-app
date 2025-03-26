@@ -1,0 +1,303 @@
+{
+    "info": {
+        "name": "Restaurant Management API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Users",
+            "item": [
+                {
+                    "name": "Create User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/users",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "users"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"login\": \"testuser\",\n    \"password\": \"password123\",\n    \"userType\": \"OWNER\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Find User by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/users/{{userId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "users", "{{userId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Find User by Login",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/users/login/{{userLogin}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "users", "login", "{{userLogin}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update User",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/users/{{userId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "users", "{{userId}}"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Updated Test User\",\n    \"email\": \"updated@example.com\",\n    \"login\": \"updateduser\",\n    \"password\": \"newpassword123\",\n    \"userType\": \"OWNER\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete User",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/users/{{userId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "users", "{{userId}}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Restaurants",
+            "item": [
+                {
+                    "name": "Create Restaurant",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test Restaurant\",\n    \"cuisineType\": \"ITALIAN\",\n    \"ownerId\": \"{{userId}}\",\n    \"address\": {\n        \"street\": \"Test Street\",\n        \"city\": \"Test City\",\n        \"state\": \"TS\",\n        \"zipCode\": \"12345-678\",\n        \"country\": \"Test Country\"\n    },\n    \"businessHours\": [\n        {\n            \"dayOfWeek\": \"MONDAY\",\n            \"openingTime\": \"10:00\",\n            \"closingTime\": \"22:00\",\n            \"closed\": false\n        }\n    ]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Find Restaurant by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Find All Restaurants",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants"]
+                        }
+                    }
+                },
+                {
+                    "name": "Find Restaurants by Owner ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/owner/{{userId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "owner", "{{userId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Find Restaurants by Name",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/name/Test",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "name", "Test"]
+                        }
+                    }
+                },
+                {
+                    "name": "Find Restaurants by Cuisine Type",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/cuisine/ITALIAN",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "cuisine", "ITALIAN"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Restaurant",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Updated Test Restaurant\",\n    \"cuisineType\": \"MEXICAN\",\n    \"address\": {\n        \"street\": \"Updated Street\",\n        \"city\": \"Updated City\",\n        \"state\": \"US\",\n        \"zipCode\": \"98765-432\",\n        \"country\": \"Updated Country\"\n    },\n    \"businessHours\": [\n        {\n            \"dayOfWeek\": \"MONDAY\",\n            \"openingTime\": \"11:00\",\n            \"closingTime\": \"23:00\",\n            \"closed\": false\n        }\n    ]\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Restaurant",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Menu Items",
+            "item": [
+                {
+                    "name": "Create Menu Item",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}/menu-items",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}", "menu-items"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Test Menu Item\",\n    \"description\": \"A delicious test menu item with amazing flavors and ingredients\",\n    \"price\": 29.90,\n    \"availableForTakeout\": true,\n    \"photoPath\": \"/images/test-menu-item.jpg\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Find Menu Item by ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}/menu-items/{{menuItemId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}", "menu-items", "{{menuItemId}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Find All Menu Items by Restaurant ID",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}/menu-items",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}", "menu-items"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Menu Item",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}/menu-items/{{menuItemId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}", "menu-items", "{{menuItemId}}"]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Updated Test Menu Item\",\n    \"description\": \"An even more delicious updated test menu item with amazing flavors and ingredients\",\n    \"price\": 34.90,\n    \"availableForTakeout\": false,\n    \"photoPath\": \"/images/updated-test-menu-item.jpg\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Menu Item",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/restaurants/{{restaurantId}}/menu-items/{{menuItemId}}",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "v1", "restaurants", "{{restaurantId}}", "menu-items", "{{menuItemId}}"]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8081"
+        },
+        {
+            "key": "userId",
+            "value": "your-user-id"
+        },
+        {
+            "key": "userLogin",
+            "value": "your-user-login"
+        },
+        {
+            "key": "restaurantId",
+            "value": "your-restaurant-id"
+        },
+        {
+            "key": "menuItemId",
+            "value": "your-menu-item-id"
+        }
+    ]
+} 

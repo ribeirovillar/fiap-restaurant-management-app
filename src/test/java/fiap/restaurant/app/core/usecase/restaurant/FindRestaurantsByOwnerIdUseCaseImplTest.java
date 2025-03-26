@@ -24,14 +24,14 @@ class FindRestaurantsByOwnerIdUseCaseImplTest {
 
     @Mock
     private RestaurantGateway restaurantGateway;
-    
+
     private FindRestaurantsByOwnerIdUseCaseImpl findRestaurantsByOwnerIdUseCase;
-    
+
     @BeforeEach
     void setUp() {
         findRestaurantsByOwnerIdUseCase = new FindRestaurantsByOwnerIdUseCaseImpl(restaurantGateway);
     }
-    
+
     @Test
     void shouldReturnRestaurantsForSpecificOwner() {
         UUID ownerId = UUID.randomUUID();

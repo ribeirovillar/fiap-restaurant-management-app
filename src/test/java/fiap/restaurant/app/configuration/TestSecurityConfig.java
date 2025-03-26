@@ -1,4 +1,4 @@
-package fiap.restaurant.app.config;
+package fiap.restaurant.app.configuration;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

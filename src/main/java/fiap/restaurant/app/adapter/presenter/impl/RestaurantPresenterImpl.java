@@ -1,8 +1,12 @@
-package fiap.restaurant.app.adapter.presenter;
+package fiap.restaurant.app.adapter.presenter.impl;
 
 import fiap.restaurant.app.adapter.database.jpa.entity.AddressEntity;
 import fiap.restaurant.app.adapter.database.jpa.entity.BusinessHoursEntity;
 import fiap.restaurant.app.adapter.database.jpa.entity.RestaurantEntity;
+import fiap.restaurant.app.adapter.presenter.AddressPresenter;
+import fiap.restaurant.app.adapter.presenter.BusinessHoursPresenter;
+import fiap.restaurant.app.adapter.presenter.RestaurantPresenter;
+import fiap.restaurant.app.adapter.presenter.UserPresenter;
 import fiap.restaurant.app.adapter.web.json.restaurant.BusinessHoursDTO;
 import fiap.restaurant.app.adapter.web.json.restaurant.CreateRestaurantDTO;
 import fiap.restaurant.app.adapter.web.json.restaurant.RestaurantDTO;

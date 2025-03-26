@@ -23,14 +23,14 @@ class FindRestaurantByIdUseCaseImplTest {
 
     @Mock
     private RestaurantGateway restaurantGateway;
-    
+
     private FindRestaurantByIdUseCaseImpl findRestaurantByIdUseCase;
-    
+
     @BeforeEach
     void setUp() {
         findRestaurantByIdUseCase = new FindRestaurantByIdUseCaseImpl(restaurantGateway);
     }
-    
+
     @Test
     void shouldFindRestaurantByIdSuccessfully() {
         UUID restaurantId = UUID.randomUUID();

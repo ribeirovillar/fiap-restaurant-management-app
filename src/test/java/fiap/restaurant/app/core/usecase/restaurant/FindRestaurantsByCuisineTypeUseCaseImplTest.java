@@ -24,14 +24,14 @@ class FindRestaurantsByCuisineTypeUseCaseImplTest {
 
     @Mock
     private RestaurantGateway restaurantGateway;
-    
+
     private FindRestaurantsByCuisineTypeUseCaseImpl findRestaurantsByCuisineTypeUseCase;
-    
+
     @BeforeEach
     void setUp() {
         findRestaurantsByCuisineTypeUseCase = new FindRestaurantsByCuisineTypeUseCaseImpl(restaurantGateway);
     }
-    
+
     @Test
     void shouldReturnRestaurantsMatchingCuisineType() {
         String cuisineType = CuisineType.ITALIAN.name();

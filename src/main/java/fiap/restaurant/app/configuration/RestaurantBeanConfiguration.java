@@ -1,4 +1,4 @@
-package fiap.restaurant.app.config;
+package fiap.restaurant.app.configuration;
 
 import fiap.restaurant.app.core.controller.RestaurantController;
 import fiap.restaurant.app.core.gateway.RestaurantGateway;

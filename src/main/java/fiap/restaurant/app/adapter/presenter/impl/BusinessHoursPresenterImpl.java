@@ -1,6 +1,7 @@
-package fiap.restaurant.app.adapter.presenter;
+package fiap.restaurant.app.adapter.presenter.impl;
 
 import fiap.restaurant.app.adapter.database.jpa.entity.BusinessHoursEntity;
+import fiap.restaurant.app.adapter.presenter.BusinessHoursPresenter;
 import fiap.restaurant.app.core.domain.BusinessHours;
 import org.springframework.stereotype.Component;
 
