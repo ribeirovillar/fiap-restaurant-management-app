@@ -1,7 +1,7 @@
 # Restaurant Management Application
 
 ## Overview
-The Restaurant Management Application is a modern, scalable backend system for restaurant operations management. Built with a clean architecture approach, the application offers user management functionality with secure authentication, setting a foundation for broader restaurant management features.
+The Restaurant Management Application is a modern, scalable backend system for restaurant operations management. Built with a clean architecture approach, the application offers comprehensive restaurant management functionalities including user authentication, restaurant registration, cuisine type categorization, and menu item management, providing a complete solution for restaurant businesses.
 
 ## Technologies
 
@@ -28,8 +28,8 @@ The Restaurant Management Application is a modern, scalable backend system for r
 The application follows Clean Architecture principles, with a clear separation of concerns:
 
 ### Core Layer
-- **Domain**: Contains business entities that encapsulate enterprise-wide business rules
-- **Use Cases**: Contains application-specific business rules
+- **Domain**: Contains business entities (User, Restaurant, MenuItem, etc.) that encapsulate enterprise-wide business rules
+- **Use Cases**: Contains application-specific business rules for operations like creating restaurants, managing menu items
 - **Controllers**: Orchestrates the flow of data to and from use cases
 - **Gateways**: Interfaces that define data persistence contracts
 
@@ -51,17 +51,30 @@ src/
 │   │   ├── adapter/
 │   │   │   ├── database/
 │   │   │   │   └── jpa/
+│   │   │   │       ├── entity/
+│   │   │   │       ├── repository/
+│   │   │   │       └── gateway/
 │   │   │   ├── presenter/
+│   │   │   │   └── dto/
 │   │   │   └── web/
+│   │   │       └── json/
+│   │   │           ├── menuitem/
+│   │   │           ├── restaurant/
+│   │   │           └── user/
 │   │   ├── config/
 │   │   ├── core/
 │   │   │   ├── controller/
 │   │   │   ├── domain/
+│   │   │   ├── exception/
 │   │   │   ├── gateway/
 │   │   │   └── usecase/
+│   │   │       ├── menuitem/
+│   │   │       ├── restaurant/
+│   │   │       └── user/
 │   │   └── AppApplication.java
 │   └── resources/
 │       ├── db/migration/
+│       ├── fiap-restaurant-management.postman_collection.json
 │       └── application.properties
 └── test/
     ├── java/fiap/restaurant/app/
@@ -88,8 +101,8 @@ The easiest way to get started is using Docker Compose, which will set up both t
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/fiap-restaurante-management-app.git
-cd fiap-restaurante-management-app
+git clone https://github.com/yourusername/fiap-restaurant-management-app.git
+cd fiap-restaurant-management-app
 ```
 
 2. Start the application stack with Docker Compose:
@@ -135,8 +148,8 @@ spring.datasource.password=postgres
 #### Building and Running the Application
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/fiap-restaurante-management-app.git
-cd fiap-restaurante-management-app
+git clone https://github.com/yourusername/fiap-restaurant-management-app.git
+cd fiap-restaurant-management-app
 ```
 
 2. Build the application:
@@ -160,7 +173,7 @@ mvn test
 
 # Run specific test classes
 mvn test -Dtest="LoginIntegrationTest"
-mvn test -Dtest="UpdatePasswordIntegrationTest"
+mvn test -Dtest="FindRestaurantsByCuisineTypeIntegrationTest"
 ```
 
 ## API Endpoints
@@ -176,9 +189,27 @@ mvn test -Dtest="UpdatePasswordIntegrationTest"
 - **POST /api/v1/users/login**: Validate user credentials
 - **POST /api/v1/users/password**: Update user password
 
+### Restaurant Management
+- **POST /api/v1/restaurants**: Create a new restaurant
+- **GET /api/v1/restaurants**: Get all restaurants
+- **GET /api/v1/restaurants/{id}**: Get restaurant by ID
+- **GET /api/v1/restaurants/owner/{ownerId}**: Get restaurants by owner ID
+- **GET /api/v1/restaurants/name/{name}**: Find restaurants by name
+- **GET /api/v1/restaurants/cuisine/{cuisineType}**: Find restaurants by cuisine type
+- **GET /api/v1/restaurants/search**: Search restaurants by name or cuisine type
+- **PUT /api/v1/restaurants/{id}**: Update an existing restaurant
+- **DELETE /api/v1/restaurants/{id}**: Delete a restaurant by ID
+
+### Menu Item Management
+- **POST /api/v1/restaurants/{restaurantId}/menu-items**: Create a new menu item for a restaurant
+- **GET /api/v1/restaurants/{restaurantId}/menu-items**: Get all menu items for a restaurant
+- **GET /api/v1/restaurants/{restaurantId}/menu-items/{id}**: Get a menu item by ID
+- **PUT /api/v1/restaurants/{restaurantId}/menu-items/{id}**: Update a menu item
+- **DELETE /api/v1/restaurants/{restaurantId}/menu-items/{id}**: Delete a menu item
+
 ## Postman Collection
 
-A Postman collection is included in the repository to help you test the API endpoints. The collection includes all available endpoints with pre-configured request bodies and parameters.
+A Postman collection is included in the repository to help you test the API endpoints. The collection includes all available endpoints with pre-configured request bodies and parameters for user, restaurant, and menu item operations.
 
 ### Importing the Collection
 1. Open Postman
@@ -191,16 +222,22 @@ A Postman collection is included in the repository to help you test the API endp
 2. The collection uses environment variables:
    - `baseUrl`: Default is set to `http://localhost:8080` 
    - `userId`: Used to store a user ID for API calls that require it
+   - `ownerId`: Used for restaurant creation and management
+   - `restaurantId`: Used for restaurant-specific operations
+   - `menuItemId`: Used for menu item operations
 
 3. Workflow for testing:
-   - First, use the "Create User" request to create a new user
-   - Copy the returned user ID into the `userId` variable (right-click and select "Set as variable value" → `userId`)
-   - Now you can use all other requests with the correct user ID
+   - First, use the "Create User" request to create a new user (restaurant owner)
+   - Copy the returned user ID into the `ownerId` variable
+   - Create a restaurant using the "Create Restaurant" request
+   - Copy the restaurant ID into the `restaurantId` variable
+   - Now you can create and manage menu items for that restaurant
 
-### Testing Authentication
-1. Create a user with the "Create User" request
-2. Use the "Login" request with the same credentials to test authentication
-3. To test password updating, use the "Update Password" request with the correct credentials
+### Testing Restaurant and Menu Operations
+1. Create a user with OWNER type using the "Create User" request
+2. Create a restaurant with the "Create Restaurant" request
+3. Add menu items using the "Create Menu Item" request
+4. Test searching restaurants by cuisine type or listing menu items
 
 ## Development Guidelines
 
@@ -234,6 +271,3 @@ The project includes Docker configuration files:
 3. Commit your changes
 4. Push to the branch
 5. Create a pull request
-
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
