@@ -3,29 +3,30 @@ package fiap.restaurant.app.core.domain;
 import fiap.restaurant.app.core.exception.EmailFormatException;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
 
     @Test
-    void shouldValidateEmail() {
+    void isValidEmail_ShouldReturnTrueForValidEmail() {
         User user = User.builder()
                 .email("valid@example.com")
                 .build();
         
         assertTrue(user.isValidEmail());
-        
-        User invalidUser = User.builder()
-                .email("invalid-email")
-                .build();
-        
-        assertFalse(invalidUser.isValidEmail());
     }
     
     @Test
-    void shouldThrowExceptionWhenSettingInvalidEmail() {
+    void isValidEmail_ShouldReturnFalseForInvalidEmail() {
+        User user = User.builder()
+                .email("invalid-email")
+                .build();
+        
+        assertFalse(user.isValidEmail());
+    }
+    
+    @Test
+    void setEmail_ShouldThrowException_WhenEmailIsInvalid() {
         User user = new User();
         
         EmailFormatException exception = assertThrows(EmailFormatException.class,
@@ -35,15 +36,16 @@ class UserTest {
     }
     
     @Test
-    void shouldNotThrowExceptionWhenSettingValidEmail() {
+    void setEmail_ShouldSetEmail_WhenEmailIsValid() {
         User user = new User();
+        String validEmail = "valid@email.com";
         
-        assertDoesNotThrow(() -> user.setEmail("valid@email.com"));
-        assertEquals("valid@email.com", user.getEmail());
+        assertDoesNotThrow(() -> user.setEmail(validEmail));
+        assertEquals(validEmail, user.getEmail());
     }
     
     @Test
-    void shouldValidateUserForCreation() {
+    void validateForCreation_ShouldNotThrowException_WhenUserIsValid() {
         User user = new User();
         user.setName("John Doe");
         user.setEmail("john@example.com");
@@ -51,11 +53,11 @@ class UserTest {
         user.setPassword("password123");
         user.setUserType(UserType.CUSTOMER);
         
-        assertDoesNotThrow(() -> user.validateForCreation());
+        assertDoesNotThrow(user::validateForCreation);
     }
     
     @Test
-    void shouldThrowExceptionWhenNameIsEmpty() {
+    void validateForCreation_ShouldThrowException_WhenNameIsEmpty() {
         User user = new User();
         user.setEmail("john@example.com");
         user.setLogin("johndoe");
@@ -63,13 +65,13 @@ class UserTest {
         user.setUserType(UserType.CUSTOMER);
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> user.validateForCreation());
+                user::validateForCreation);
         
         assertEquals("Name is required", exception.getMessage());
     }
     
     @Test
-    void shouldThrowExceptionWhenEmailIsEmpty() {
+    void validateForCreation_ShouldThrowException_WhenEmailIsEmpty() {
         User user = new User();
         user.setName("John Doe");
         user.setLogin("johndoe");
@@ -77,13 +79,13 @@ class UserTest {
         user.setUserType(UserType.CUSTOMER);
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> user.validateForCreation());
+                user::validateForCreation);
         
         assertEquals("Email is required", exception.getMessage());
     }
     
     @Test
-    void shouldThrowExceptionWhenSettingShortLogin() {
+    void setLogin_ShouldThrowException_WhenLoginIsTooShort() {
         User user = new User();
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -93,15 +95,16 @@ class UserTest {
     }
     
     @Test
-    void shouldAcceptValidLogin() {
+    void setLogin_ShouldSetLogin_WhenLoginIsValid() {
         User user = new User();
+        String validLogin = "validlogin";
         
-        assertDoesNotThrow(() -> user.setLogin("validlogin"));
-        assertEquals("validlogin", user.getLogin());
+        assertDoesNotThrow(() -> user.setLogin(validLogin));
+        assertEquals(validLogin, user.getLogin());
     }
     
     @Test
-    void shouldThrowExceptionWhenSettingShortPassword() {
+    void setPassword_ShouldThrowException_WhenPasswordIsTooShort() {
         User user = new User();
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -111,15 +114,16 @@ class UserTest {
     }
     
     @Test
-    void shouldAcceptValidPassword() {
+    void setPassword_ShouldSetPassword_WhenPasswordIsValid() {
         User user = new User();
+        String validPassword = "validpassword";
         
-        assertDoesNotThrow(() -> user.setPassword("validpassword"));
-        assertEquals("validpassword", user.getPassword());
+        assertDoesNotThrow(() -> user.setPassword(validPassword));
+        assertEquals(validPassword, user.getPassword());
     }
     
     @Test
-    void shouldThrowExceptionWhenUserTypeIsNull() {
+    void setUserType_ShouldThrowException_WhenUserTypeIsNull() {
         User user = new User();
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -129,30 +133,31 @@ class UserTest {
     }
     
     @Test
-    void shouldAcceptValidUserType() {
+    void setUserType_ShouldSetUserType_WhenUserTypeIsValid() {
         User user = new User();
+        UserType validUserType = UserType.CUSTOMER;
         
-        assertDoesNotThrow(() -> user.setUserType(UserType.CUSTOMER));
-        assertEquals(UserType.CUSTOMER, user.getUserType());
+        assertDoesNotThrow(() -> user.setUserType(validUserType));
+        assertEquals(validUserType, user.getUserType());
     }
     
     @Test
-    void shouldValidateAddressWhenSettingAddress() {
+    void setAddress_ShouldThrowException_WhenAddressIsInvalid() {
         User user = new User();
-        Address address = Address.builder()
+        Address invalidAddress = Address.builder()
                 .street("st")
                 .build();
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> user.setAddress(address));
+                () -> user.setAddress(invalidAddress));
         
         assertEquals("Street must be at least 3 characters long", exception.getMessage());
     }
     
     @Test
-    void shouldAcceptValidAddress() {
+    void setAddress_ShouldSetAddress_WhenAddressIsValid() {
         User user = new User();
-        Address address = Address.builder()
+        Address validAddress = Address.builder()
                 .street("Valid Street")
                 .city("Valid City")
                 .state("VS")
@@ -160,19 +165,22 @@ class UserTest {
                 .country("Valid Country")
                 .build();
         
-        assertDoesNotThrow(() -> user.setAddress(address));
-        assertEquals(address, user.getAddress());
+        assertDoesNotThrow(() -> user.setAddress(validAddress));
+        assertEquals(validAddress, user.getAddress());
     }
     
     @Test
-    void shouldValidateForCreation() {
-        User user = User.builder().build();
+    void validateForCreation_ShouldThrowException_WhenUserIsIncomplete() {
+        User incompleteUser = User.builder().build();
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                user::validateForCreation);
+                incompleteUser::validateForCreation);
         
         assertEquals("Name is required", exception.getMessage());
-        
+    }
+    
+    @Test
+    void validateForCreation_ShouldThrowException_WhenEmailIsInvalid() {
         User userWithInvalidEmail = User.builder()
                 .name("Valid Name")
                 .email("invalid-email")
@@ -185,7 +193,10 @@ class UserTest {
                 userWithInvalidEmail::validateForCreation);
         
         assertEquals("Invalid email format: invalid-email", emailException.getMessage());
-        
+    }
+    
+    @Test
+    void validateForCreation_ShouldNotThrowException_WhenUserIsComplete() {
         User validUser = User.builder()
                 .name("Valid Name")
                 .email("valid@example.com")
@@ -198,7 +209,7 @@ class UserTest {
     }
     
     @Test
-    void shouldValidateForUpdate() {
+    void validateForUpdate_ShouldThrowException_WhenEmailIsInvalid() {
         User existingUser = User.builder()
                 .name("Existing Name")
                 .email("existing@example.com")
@@ -215,6 +226,17 @@ class UserTest {
                 () -> userWithInvalidEmail.validateForUpdate(existingUser));
         
         assertEquals("Invalid email format: invalid-email", emailException.getMessage());
+    }
+    
+    @Test
+    void validateForUpdate_ShouldNotThrowException_WhenUpdateIsValid() {
+        User existingUser = User.builder()
+                .name("Existing Name")
+                .email("existing@example.com")
+                .login("existinglogin")
+                .password("existingpassword")
+                .userType(UserType.CUSTOMER)
+                .build();
         
         User validUpdate = User.builder()
                 .name("Updated Name")

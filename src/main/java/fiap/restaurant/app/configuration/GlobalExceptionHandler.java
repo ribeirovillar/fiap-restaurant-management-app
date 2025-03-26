@@ -37,7 +37,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             UserNotFoundException.class,
-            UpdateUserException.class,
             RestaurantNotFoundException.class
     })
     public ResponseEntity<ErrorResponseDto> handleEntityNotFound(RuntimeException ex, WebRequest request) {

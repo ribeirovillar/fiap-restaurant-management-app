@@ -95,10 +95,8 @@ public abstract class BaseRestaurantIntegrationTest {
     protected List<BusinessHoursDTO> createBusinessHours() {
         List<BusinessHoursDTO> businessHours = new ArrayList<>();
         
-        // Monday
         businessHours.add(createBusinessHourDTO(DayOfWeek.MONDAY, "09:00", "18:00", false));
         
-        // Tuesday
         businessHours.add(createBusinessHourDTO(DayOfWeek.TUESDAY, "09:00", "18:00", false));
         
         return businessHours;

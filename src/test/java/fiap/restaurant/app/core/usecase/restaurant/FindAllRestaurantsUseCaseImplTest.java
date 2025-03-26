@@ -25,7 +25,7 @@ class FindAllRestaurantsUseCaseImplTest {
     @Mock
     private RestaurantGateway restaurantGateway;
 
-    private FindAllRestaurantsUseCaseImpl findAllRestaurantsUseCase;
+    private FindAllRestaurantsUseCase findAllRestaurantsUseCase;
 
     @BeforeEach
     void setUp() {
@@ -33,37 +33,8 @@ class FindAllRestaurantsUseCaseImplTest {
     }
 
     @Test
-    void shouldReturnAllRestaurants() {
-        UUID ownerId1 = UUID.randomUUID();
-        User owner1 = User.builder()
-                .id(ownerId1)
-                .name("Owner 1")
-                .userType(UserType.OWNER)
-                .build();
-                
-        UUID ownerId2 = UUID.randomUUID();
-        User owner2 = User.builder()
-                .id(ownerId2)
-                .name("Owner 2")
-                .userType(UserType.OWNER)
-                .build();
-        
-        Restaurant restaurant1 = Restaurant.builder()
-                .id(UUID.randomUUID())
-                .name("Restaurant 1")
-                .cuisineType(CuisineType.ITALIAN)
-                .owner(owner1)
-                .build();
-                
-        Restaurant restaurant2 = Restaurant.builder()
-                .id(UUID.randomUUID())
-                .name("Restaurant 2")
-                .cuisineType(CuisineType.MEXICAN)
-                .owner(owner2)
-                .build();
-        
-        List<Restaurant> expectedRestaurants = Arrays.asList(restaurant1, restaurant2);
-        
+    void execute_ShouldReturnAllRestaurants_WhenRestaurantsExist() {
+        List<Restaurant> expectedRestaurants = createSampleRestaurants();
         when(restaurantGateway.findAll()).thenReturn(expectedRestaurants);
         
         List<Restaurant> result = findAllRestaurantsUseCase.execute();
@@ -71,19 +42,53 @@ class FindAllRestaurantsUseCaseImplTest {
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(expectedRestaurants, result);
-        
         verify(restaurantGateway).findAll();
     }
     
     @Test
-    void shouldReturnEmptyListWhenNoRestaurantsExist() {
+    void execute_ShouldReturnEmptyList_WhenNoRestaurantsExist() {
         when(restaurantGateway.findAll()).thenReturn(Collections.emptyList());
         
         List<Restaurant> result = findAllRestaurantsUseCase.execute();
         
         assertNotNull(result);
         assertTrue(result.isEmpty());
-        
         verify(restaurantGateway).findAll();
+    }
+    
+    private List<Restaurant> createSampleRestaurants() {
+        User owner1 = createOwner("Owner 1");
+        User owner2 = createOwner("Owner 2");
+        
+        Restaurant restaurant1 = createRestaurant(
+                "Restaurant 1", 
+                CuisineType.ITALIAN, 
+                owner1
+        );
+                
+        Restaurant restaurant2 = createRestaurant(
+                "Restaurant 2", 
+                CuisineType.MEXICAN, 
+                owner2
+        );
+        
+        return Arrays.asList(restaurant1, restaurant2);
+    }
+    
+    private User createOwner(String name) {
+        return User.builder()
+                .id(UUID.randomUUID())
+                .name(name)
+                .userType(UserType.OWNER)
+                .build();
+    }
+    
+    private Restaurant createRestaurant(String name, CuisineType cuisineType, User owner) {
+        return Restaurant.builder()
+                .id(UUID.randomUUID())
+                .name(name)
+                .cuisineType(cuisineType)
+                .owner(owner)
+                .build();
     }
 } 

@@ -5,6 +5,7 @@ import fiap.restaurant.app.adapter.web.json.menuitem.MenuItemDTO;
 import fiap.restaurant.app.adapter.web.json.menuitem.UpsertMenuItemDTO;
 import fiap.restaurant.app.core.controller.MenuItemController;
 import fiap.restaurant.app.core.domain.MenuItem;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,6 +26,7 @@ public class MenuItemApiController {
     MenuItemPresenter menuItemPresenter;
 
     @PostMapping
+    @Operation(summary = "Create a new menu item for a restaurant")
     public ResponseEntity<MenuItemDTO> createMenuItem(
             @PathVariable UUID restaurantId,
             @RequestBody UpsertMenuItemDTO createMenuItemDTO) {
@@ -34,6 +36,7 @@ public class MenuItemApiController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a menu item by ID")
     public ResponseEntity<MenuItemDTO> findMenuItemById(
             @PathVariable UUID restaurantId,
             @PathVariable UUID id) {
@@ -44,6 +47,7 @@ public class MenuItemApiController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all menu items for a restaurant")
     public ResponseEntity<List<MenuItemDTO>> findMenuItemsByRestaurantId(@PathVariable UUID restaurantId) {
         List<MenuItemDTO> menuItems = menuItemController.findByRestaurantId(restaurantId)
                 .stream()
@@ -53,6 +57,7 @@ public class MenuItemApiController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a menu item")
     public ResponseEntity<MenuItemDTO> updateMenuItem(
             @PathVariable UUID restaurantId,
             @PathVariable UUID id,
@@ -63,6 +68,7 @@ public class MenuItemApiController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a menu item")
     public ResponseEntity<Void> deleteMenuItem(
             @PathVariable UUID restaurantId,
             @PathVariable UUID id) {

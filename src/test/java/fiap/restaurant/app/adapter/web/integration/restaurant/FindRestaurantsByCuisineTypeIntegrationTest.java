@@ -19,35 +19,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FindRestaurantsByCuisineTypeIntegrationTest extends BaseRestaurantIntegrationTest {
 
     @Test
-    public void findRestaurantsByCuisineType_WithValidType_ReturnsRestaurants() throws Exception {
+    public void findByCuisineType_ShouldReturnMatchingRestaurants_WhenCuisineTypeExists() throws Exception {
         UUID ownerId = createTestOwner();
         
-        CreateRestaurantDTO createDTO1 = createRestaurantDTO(ownerId);
-        createDTO1.setName("Italian Restaurant 1");
-        createDTO1.setCuisineType(CuisineType.ITALIAN);
+        String italianRestaurant1Name = "Italian Restaurant 1";
+        String italianRestaurant2Name = "Italian Restaurant 2";
         
-        mockMvc.perform(post("/api/v1/restaurants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createDTO1)))
-                .andExpect(status().isCreated());
-        
-        CreateRestaurantDTO createDTO2 = createRestaurantDTO(ownerId);
-        createDTO2.setName("Italian Restaurant 2");
-        createDTO2.setCuisineType(CuisineType.ITALIAN);
-        
-        mockMvc.perform(post("/api/v1/restaurants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createDTO2)))
-                .andExpect(status().isCreated());
-        
-        CreateRestaurantDTO createDTO3 = createRestaurantDTO(ownerId);
-        createDTO3.setName("Mexican Restaurant");
-        createDTO3.setCuisineType(CuisineType.MEXICAN);
-        
-        mockMvc.perform(post("/api/v1/restaurants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createDTO3)))
-                .andExpect(status().isCreated());
+        createRestaurantWithCuisineType(ownerId, italianRestaurant1Name, CuisineType.ITALIAN);
+        createRestaurantWithCuisineType(ownerId, italianRestaurant2Name, CuisineType.ITALIAN);
+        createRestaurantWithCuisineType(ownerId, "Mexican Restaurant", CuisineType.MEXICAN);
         
         MvcResult findResult = mockMvc.perform(get("/api/v1/restaurants/cuisine/{cuisineType}", "ITALIAN")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -67,9 +47,9 @@ public class FindRestaurantsByCuisineTypeIntegrationTest extends BaseRestaurantI
         for (RestaurantDTO restaurant : restaurants) {
             assertEquals(CuisineType.ITALIAN, restaurant.getCuisineType());
             
-            if (restaurant.getName().equals("Italian Restaurant 1")) {
+            if (restaurant.getName().equals(italianRestaurant1Name)) {
                 foundItalian1 = true;
-            } else if (restaurant.getName().equals("Italian Restaurant 2")) {
+            } else if (restaurant.getName().equals(italianRestaurant2Name)) {
                 foundItalian2 = true;
             }
         }
@@ -79,15 +59,9 @@ public class FindRestaurantsByCuisineTypeIntegrationTest extends BaseRestaurantI
     }
     
     @Test
-    public void findRestaurantsByCuisineType_WithNonExistingType_ReturnsEmptyList() throws Exception {
+    public void findByCuisineType_ShouldReturnEmptyList_WhenCuisineTypeDoesNotExist() throws Exception {
         UUID ownerId = createTestOwner();
-        CreateRestaurantDTO createDTO = createRestaurantDTO(ownerId);
-        createDTO.setCuisineType(CuisineType.ITALIAN);
-        
-        mockMvc.perform(post("/api/v1/restaurants")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createDTO)))
-                .andExpect(status().isCreated());
+        createRestaurantWithCuisineType(ownerId, "Test Italian Restaurant", CuisineType.ITALIAN);
         
         MvcResult findResult = mockMvc.perform(get("/api/v1/restaurants/cuisine/{cuisineType}", "JAPANESE")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -100,5 +74,16 @@ public class FindRestaurantsByCuisineTypeIntegrationTest extends BaseRestaurantI
         
         assertNotNull(restaurants);
         assertTrue(restaurants.isEmpty());
+    }
+    
+    private void createRestaurantWithCuisineType(UUID ownerId, String name, CuisineType cuisineType) throws Exception {
+        CreateRestaurantDTO createDTO = createRestaurantDTO(ownerId);
+        createDTO.setName(name);
+        createDTO.setCuisineType(cuisineType);
+        
+        mockMvc.perform(post("/api/v1/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createDTO)))
+                .andExpect(status().isCreated());
     }
 } 
