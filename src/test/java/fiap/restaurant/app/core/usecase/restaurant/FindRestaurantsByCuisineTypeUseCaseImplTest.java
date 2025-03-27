@@ -3,8 +3,8 @@ package fiap.restaurant.app.core.usecase.restaurant;
 import fiap.restaurant.app.core.domain.CuisineType;
 import fiap.restaurant.app.core.domain.Restaurant;
 import fiap.restaurant.app.core.domain.User;
-import fiap.restaurant.app.core.domain.UserType;
 import fiap.restaurant.app.core.gateway.RestaurantGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FindRestaurantsByCuisineTypeUseCaseImplTest {
@@ -39,7 +40,7 @@ class FindRestaurantsByCuisineTypeUseCaseImplTest {
         User owner = User.builder()
                 .id(UUID.randomUUID())
                 .name("Restaurant Owner")
-                .userType(UserType.OWNER)
+                .userType(UserTypeTestHelper.createOwnerDomain())
                 .build();
         
         Restaurant restaurant1 = Restaurant.builder()

@@ -1,6 +1,7 @@
 package fiap.restaurant.app.core.domain;
 
 import fiap.restaurant.app.core.exception.EmailFormatException;
+import fiap.restaurant.app.util.UserTypeTestUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +52,7 @@ class UserTest {
         user.setEmail("john@example.com");
         user.setLogin("johndoe");
         user.setPassword("password123");
-        user.setUserType(UserType.CUSTOMER);
+        user.setUserType(UserTypeTestUtil.createCustomerType());
         
         assertDoesNotThrow(user::validateForCreation);
     }
@@ -62,7 +63,7 @@ class UserTest {
         user.setEmail("john@example.com");
         user.setLogin("johndoe");
         user.setPassword("password123");
-        user.setUserType(UserType.CUSTOMER);
+        user.setUserType(UserTypeTestUtil.createCustomerType());
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 user::validateForCreation);
@@ -76,7 +77,7 @@ class UserTest {
         user.setName("John Doe");
         user.setLogin("johndoe");
         user.setPassword("password123");
-        user.setUserType(UserType.CUSTOMER);
+        user.setUserType(UserTypeTestUtil.createCustomerType());
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 user::validateForCreation);
@@ -135,7 +136,7 @@ class UserTest {
     @Test
     void setUserType_ShouldSetUserType_WhenUserTypeIsValid() {
         User user = new User();
-        UserType validUserType = UserType.CUSTOMER;
+        UserType validUserType = UserTypeTestUtil.createCustomerType();
         
         assertDoesNotThrow(() -> user.setUserType(validUserType));
         assertEquals(validUserType, user.getUserType());
@@ -186,7 +187,7 @@ class UserTest {
                 .email("invalid-email")
                 .login("validlogin")
                 .password("validpassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestUtil.createCustomerType())
                 .build();
         
         EmailFormatException emailException = assertThrows(EmailFormatException.class,
@@ -202,7 +203,7 @@ class UserTest {
                 .email("valid@example.com")
                 .login("validlogin")
                 .password("validpassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestUtil.createOwnerType())
                 .build();
         
         assertDoesNotThrow(validUser::validateForCreation);
@@ -215,7 +216,7 @@ class UserTest {
                 .email("existing@example.com")
                 .login("existinglogin")
                 .password("existingpassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestUtil.createOwnerType())
                 .build();
         
         User userWithInvalidEmail = User.builder()
@@ -235,7 +236,7 @@ class UserTest {
                 .email("existing@example.com")
                 .login("existinglogin")
                 .password("existingpassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestUtil.createOwnerType())
                 .build();
         
         User validUpdate = User.builder()

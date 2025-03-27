@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7d3a13f1-6207-45d0-8f3c-81dea45460bb",
+		"_postman_id": "2fdb78dc-2b9f-4624-9fca-5e09f5248108",
 		"name": "FIAP Restaurant Management API",
 		"description": "API collection for the FIAP Restaurant Management application, featuring user management, authentication endpoints, and restaurant management.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"login\": \"testuser\",\n  \"password\": \"Test@1234\",\n  \"userType\": \"CUSTOMER\",\n  \"address\": {\n    \"street\": \"Test Street\",\n    \"city\": \"Test City\",\n    \"state\": \"TS\",\n    \"zipCode\": \"12345\",\n    \"country\": \"Test Country\"\n  }\n}"
+							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"login\": \"testuser\",\n    \"password\": \"Test@1234\",\n    \"userType\": {\n        \"id\": \"79ffddc6-fc4b-4f3c-a649-898af9fbc9a3\",\n        \"name\": \"EMPLOYEE\"\n    },\n    \"address\": {\n        \"street\": \"Test Street\",\n        \"city\": \"Test City\",\n        \"state\": \"TS\",\n        \"zipCode\": \"12345\",\n        \"country\": \"Test Country\"\n    }\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/users",
@@ -35,7 +35,7 @@
 								"users"
 							]
 						},
-						"description": "Creates a new user with the provided details."
+						"description": "Creates a new user with the provided details. Use the appropriate userType ID (CUSTOMER: 11111111-1111-1111-1111-111111111111, OWNER: 22222222-2222-2222-2222-222222222222)."
 					},
 					"response": []
 				},
@@ -92,7 +92,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Updated User\",\n  \"email\": \"updated@example.com\",\n  \"address\": {\n    \"street\": \"Updated Street\",\n    \"city\": \"Updated City\",\n    \"state\": \"US\",\n    \"zipCode\": \"54321\",\n    \"country\": \"Updated Country\"\n  }\n}"
+							"raw": "{\n  \"name\": \"Updated User\",\n  \"email\": \"updated@example.com\",\n  \"userType\": {\n    \"id\": \"11111111-1111-1111-1111-111111111111\",\n    \"name\": \"CUSTOMER\"\n  },\n  \"address\": {\n    \"street\": \"Updated Street\",\n    \"city\": \"Updated City\",\n    \"state\": \"US\",\n    \"zipCode\": \"54321\",\n    \"country\": \"Updated Country\"\n  }\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/users/:id",
@@ -112,7 +112,7 @@
 								}
 							]
 						},
-						"description": "Updates an existing user by their ID."
+						"description": "Updates an existing user by their ID. User type can be changed (CUSTOMER: 11111111-1111-1111-1111-111111111111, OWNER: 22222222-2222-2222-2222-222222222222)."
 					},
 					"response": []
 				},
@@ -139,6 +139,155 @@
 				}
 			],
 			"description": "Endpoints for managing user accounts."
+		},
+		{
+			"name": "User Type Management",
+			"item": [
+				{
+					"name": "Create User Type",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"EMPLOYEE\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user-types",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-types"
+							]
+						},
+						"description": "Creates a new user type with the provided name."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All User Types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user-types",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-types"
+							]
+						},
+						"description": "Retrieves a list of all user types."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Type by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user-types/{{userTypeId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-types",
+								"{{userTypeId}}"
+							]
+						},
+						"description": "Retrieves a specific user type by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Type by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user-types/name/CUSTOMER",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-types",
+								"name",
+								"CUSTOMER"
+							]
+						},
+						"description": "Retrieves a specific user type by its name."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Type",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user-types/{{userTypeId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-types",
+								"{{userTypeId}}"
+							]
+						},
+						"description": "Updates an existing user type by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Type",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/user-types/{{userTypeId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user-types",
+								"{{userTypeId}}"
+							]
+						},
+						"description": "Deletes a user type by its ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for managing user types."
 		},
 		{
 			"name": "Authentication",
@@ -234,7 +383,7 @@
 								"restaurants"
 							]
 						},
-						"description": "Creates a new restaurant with the provided details. The ownerId must refer to a user with OWNER type."
+						"description": "Creates a new restaurant with the provided details. The ownerId must refer to a user with OWNER type (user with userType.id = 22222222-2222-2222-2222-222222222222)."
 					},
 					"response": []
 				},
@@ -591,6 +740,11 @@
 		{
 			"key": "menuItemId",
 			"value": "menu-item-id-here",
+			"type": "string"
+		},
+		{
+			"key": "userTypeId",
+			"value": "user-type-id-here",
 			"type": "string"
 		}
 	]

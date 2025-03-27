@@ -1,9 +1,14 @@
+-- Insert user types
+INSERT INTO user_types (id, name) VALUES
+    ('77777777-7777-7777-7777-777777777777', 'CUSTOMER'),
+    ('88888888-8888-8888-8888-888888888888', 'OWNER');
+
 -- Insert sample users (owners and customers)
-INSERT INTO users (id, name, email, login, password, last_modified_date, user_type) VALUES
-    ('11111111-1111-1111-1111-111111111111', 'João Silva', 'joao.silva@example.com', 'joaosilva', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), 1), -- OWNER
-    ('22222222-2222-2222-2222-222222222222', 'Maria Souza', 'maria.souza@example.com', 'mariasouza', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), 1), -- OWNER
-    ('33333333-3333-3333-3333-333333333333', 'Pedro Oliveira', 'pedro@example.com', 'pedrooliveira', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), 0), -- CUSTOMER
-    ('44444444-4444-4444-4444-444444444444', 'Ana Santos', 'ana@example.com', 'anasantos', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), 0); -- CUSTOMER
+INSERT INTO users (id, name, email, login, password, last_modified_date, user_type_id) VALUES
+    ('11111111-1111-1111-1111-111111111111', 'João Silva', 'joao.silva@example.com', 'joaosilva', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), '88888888-8888-8888-8888-888888888888'), -- OWNER
+    ('22222222-2222-2222-2222-222222222222', 'Maria Souza', 'maria.souza@example.com', 'mariasouza', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), '88888888-8888-8888-8888-888888888888'), -- OWNER
+    ('33333333-3333-3333-3333-333333333333', 'Pedro Oliveira', 'pedro@example.com', 'pedrooliveira', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), '77777777-7777-7777-7777-777777777777'), -- CUSTOMER
+    ('44444444-4444-4444-4444-444444444444', 'Ana Santos', 'ana@example.com', 'anasantos', '$2a$10$xVxWQLm0y3u3QUv9TO9kFe9vxmVX4nJiGpO2m2QrZ5x0EQM/WrY7y', NOW(), '77777777-7777-7777-7777-777777777777'); -- CUSTOMER
 
 -- Insert addresses for users
 INSERT INTO addresses (id, street, city, state, zip_code, country, user_id) VALUES

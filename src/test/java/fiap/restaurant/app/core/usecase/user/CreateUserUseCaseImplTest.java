@@ -5,6 +5,7 @@ import fiap.restaurant.app.core.domain.UserType;
 import fiap.restaurant.app.core.exception.DuplicatedDataException;
 import fiap.restaurant.app.core.exception.EmailFormatException;
 import fiap.restaurant.app.core.gateway.UserGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,12 +42,13 @@ class CreateUserUseCaseImplTest {
         String login = "testuser";
         String password = "password123";
         String encodedPassword = "encodedPassword";
+        UserType customerType = UserTypeTestHelper.createCustomerDomain();
 
         User user = User.builder()
                 .email(email)
                 .login(login)
                 .password(password)
-                .userType(UserType.CUSTOMER)
+                .userType(customerType)
                 .name("Test User")
                 .build();
 
@@ -55,7 +57,7 @@ class CreateUserUseCaseImplTest {
                 .email(email)
                 .login(login)
                 .password(encodedPassword)
-                .userType(UserType.CUSTOMER)
+                .userType(customerType)
                 .name("Test User")
                 .build();
 
@@ -71,7 +73,7 @@ class CreateUserUseCaseImplTest {
         assertEquals(email, result.getEmail());
         assertEquals(login, result.getLogin());
         assertEquals(encodedPassword, result.getPassword());
-        assertEquals(UserType.CUSTOMER, result.getUserType());
+        assertEquals(customerType, result.getUserType());
         
         verify(userGateway).existsByLogin(login);
         verify(userGateway).existsByEmail(email);
@@ -81,11 +83,13 @@ class CreateUserUseCaseImplTest {
 
     @Test
     void shouldThrowExceptionWhenEmailIsInvalid() {
+        UserType customerType = UserTypeTestHelper.createCustomerDomain();
+        
         User user = User.builder()
                 .email("invalid-email")
                 .login("testuser")
                 .password("password123")
-                .userType(UserType.CUSTOMER)
+                .userType(customerType)
                 .name("Test User")
                 .build();
 
@@ -104,12 +108,13 @@ class CreateUserUseCaseImplTest {
     void shouldThrowExceptionWhenLoginAlreadyExists() {
         String email = "test@example.com";
         String login = "existinglogin";
+        UserType customerType = UserTypeTestHelper.createCustomerDomain();
         
         User user = User.builder()
                 .email(email)
                 .login(login)
                 .password("password123")
-                .userType(UserType.CUSTOMER)
+                .userType(customerType)
                 .name("Test User")
                 .build();
 
@@ -130,12 +135,13 @@ class CreateUserUseCaseImplTest {
     void shouldThrowExceptionWhenEmailAlreadyExists() {
         String email = "existing@example.com";
         String login = "testuser";
+        UserType customerType = UserTypeTestHelper.createCustomerDomain();
         
         User user = User.builder()
                 .email(email)
                 .login(login)
                 .password("password123")
-                .userType(UserType.CUSTOMER)
+                .userType(customerType)
                 .name("Test User")
                 .build();
 

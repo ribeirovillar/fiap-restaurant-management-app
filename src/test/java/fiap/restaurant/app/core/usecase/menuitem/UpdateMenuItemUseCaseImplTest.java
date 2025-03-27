@@ -4,8 +4,8 @@ import fiap.restaurant.app.core.domain.CuisineType;
 import fiap.restaurant.app.core.domain.MenuItem;
 import fiap.restaurant.app.core.domain.Restaurant;
 import fiap.restaurant.app.core.domain.User;
-import fiap.restaurant.app.core.domain.UserType;
 import fiap.restaurant.app.core.gateway.MenuItemGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +44,7 @@ class UpdateMenuItemUseCaseImplTest {
                 .id(restaurantId)
                 .name("Test Restaurant")
                 .cuisineType(CuisineType.ITALIAN)
-                .owner(User.builder().id(ownerId).userType(UserType.OWNER).build())
+                .owner(User.builder().id(ownerId).userType(UserTypeTestHelper.createOwnerDomain()).build())
                 .build();
 
         MenuItem existingMenuItem = new MenuItem();
@@ -128,7 +128,7 @@ class UpdateMenuItemUseCaseImplTest {
                 .id(restaurantId)
                 .name("Test Restaurant")
                 .cuisineType(CuisineType.ITALIAN)
-                .owner(User.builder().id(ownerId).userType(UserType.OWNER).build())
+                .owner(User.builder().id(ownerId).userType(UserTypeTestHelper.createOwnerDomain()).build())
                 .build();
 
         MenuItem existingMenuItem = new MenuItem();
@@ -171,7 +171,7 @@ class UpdateMenuItemUseCaseImplTest {
                 .id(restaurantId)
                 .name("Test Restaurant")
                 .cuisineType(CuisineType.ITALIAN)
-                .owner(User.builder().id(ownerId).userType(UserType.OWNER).build())
+                .owner(User.builder().id(ownerId).userType(UserTypeTestHelper.createOwnerDomain()).build())
                 .build();
 
         MenuItem existingMenuItem = new MenuItem();
@@ -214,7 +214,7 @@ class UpdateMenuItemUseCaseImplTest {
                 .id(restaurantId)
                 .name("Test Restaurant")
                 .cuisineType(CuisineType.ITALIAN)
-                .owner(User.builder().id(ownerId).userType(UserType.OWNER).build())
+                .owner(User.builder().id(ownerId).userType(UserTypeTestHelper.createOwnerDomain()).build())
                 .build();
 
         MenuItem existingMenuItem = new MenuItem();
@@ -257,7 +257,7 @@ class UpdateMenuItemUseCaseImplTest {
                 .id(restaurantId)
                 .name("Test Restaurant")
                 .cuisineType(CuisineType.ITALIAN)
-                .owner(User.builder().id(ownerId).userType(UserType.OWNER).build())
+                .owner(User.builder().id(ownerId).userType(UserTypeTestHelper.createOwnerDomain()).build())
                 .build();
 
         MenuItem existingMenuItem = new MenuItem();

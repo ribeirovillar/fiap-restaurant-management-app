@@ -1,6 +1,5 @@
 package fiap.restaurant.app.adapter.database.jpa.entity;
 
-import fiap.restaurant.app.core.domain.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,9 +35,9 @@ public class UserEntity {
     @Column(name = "last_modified_date", nullable = false)
     private LocalDateTime lastModifiedDate;
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "user_type")
-    private UserType userType;
+    @ManyToOne
+    @JoinColumn(name = "user_type_id")
+    private UserTypeEntity userType;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private AddressEntity address;

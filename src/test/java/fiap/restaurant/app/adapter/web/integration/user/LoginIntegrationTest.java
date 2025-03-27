@@ -2,7 +2,7 @@ package fiap.restaurant.app.adapter.web.integration.user;
 
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.LoginRequestDTO;
-import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
@@ -22,7 +22,7 @@ public class LoginIntegrationTest extends BaseUserIntegrationTest {
         createUserDTO.setEmail("login-test@example.com");
         createUserDTO.setLogin(login);
         createUserDTO.setPassword(password);
-        createUserDTO.setUserType(UserType.CUSTOMER);
+        createUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         createUserDTO.setAddress(createAddressDTO());
 
         mockMvc.perform(post("/api/v1/users")
@@ -52,7 +52,7 @@ public class LoginIntegrationTest extends BaseUserIntegrationTest {
         createUserDTO.setEmail("wrong-pass@example.com");
         createUserDTO.setLogin(login);
         createUserDTO.setPassword(password);
-        createUserDTO.setUserType(UserType.CUSTOMER);
+        createUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         createUserDTO.setAddress(createAddressDTO());
 
         mockMvc.perform(post("/api/v1/users")

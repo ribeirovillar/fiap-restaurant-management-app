@@ -5,6 +5,7 @@ import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UpdateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
 import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,7 +26,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         createUserDTO.setEmail("update-user@example.com");
         createUserDTO.setLogin("updateuser" + System.currentTimeMillis());
         createUserDTO.setPassword("password123");
-        createUserDTO.setUserType(UserType.CUSTOMER);
+        createUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         createUserDTO.setAddress(createAddressDTO());
         
         MvcResult createResult = mockMvc.perform(post("/api/v1/users")
@@ -44,7 +45,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         UpdateUserDTO updateUserDTO = new UpdateUserDTO();
         updateUserDTO.setName("User Updated Name");
         updateUserDTO.setEmail("updated-email@example.com");
-        updateUserDTO.setUserType(UserType.OWNER);
+        updateUserDTO.setUserType(UserTypeTestHelper.createOwnerDTO());
         
         AddressDTO updatedAddress = new AddressDTO();
         updatedAddress.setStreet("Updated Street");
@@ -61,7 +62,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
                 .andExpect(jsonPath("$.id").value(userId.toString()))
                 .andExpect(jsonPath("$.name").value(updateUserDTO.getName()))
                 .andExpect(jsonPath("$.email").value(updateUserDTO.getEmail()))
-                .andExpect(jsonPath("$.userType").value(updateUserDTO.getUserType().toString()))
+                .andExpect(jsonPath("$.userType.name").value(UserType.OWNER))
                 .andExpect(jsonPath("$.login").value(createdUser.getLogin()))
                 .andReturn();
         
@@ -70,11 +71,11 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
                 UserResponseDTO.class
         );
         
-        assertEquals(userId, updatedUser.getId());
-        assertEquals(updateUserDTO.getName(), updatedUser.getName());
-        assertEquals(updateUserDTO.getEmail(), updatedUser.getEmail());
-        assertEquals(updateUserDTO.getUserType(), updatedUser.getUserType());
-        assertEquals(createdUser.getLogin(), updatedUser.getLogin());
+        assertEquals(updatedUser.getId(), userId);
+        assertEquals(updatedUser.getName(), updateUserDTO.getName());
+        assertEquals(updatedUser.getEmail(), updateUserDTO.getEmail());
+        assertEquals(updatedUser.getUserType().getName(), updateUserDTO.getUserType().getName());
+        assertEquals(updatedUser.getLogin(), createdUser.getLogin());
         
         assertNotNull(updatedUser.getAddress());
         assertEquals(updatedAddress.getStreet(), updatedUser.getAddress().getStreet());
@@ -88,7 +89,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
                 .andExpect(jsonPath("$.id").value(userId.toString()))
                 .andExpect(jsonPath("$.name").value(updateUserDTO.getName()))
                 .andExpect(jsonPath("$.email").value(updateUserDTO.getEmail()))
-                .andExpect(jsonPath("$.userType").value(updateUserDTO.getUserType().toString()))
+                .andExpect(jsonPath("$.userType.name").value(UserType.OWNER))
                 .andExpect(jsonPath("$.login").value(createdUser.getLogin()));
     }
     
@@ -99,7 +100,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         UpdateUserDTO updateUserDTO = new UpdateUserDTO();
         updateUserDTO.setName("Updated Name");
         updateUserDTO.setEmail("updated@example.com");
-        updateUserDTO.setUserType(UserType.CUSTOMER);
+        updateUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         updateUserDTO.setAddress(createAddressDTO());
         
         mockMvc.perform(put("/api/v1/users/" + randomId)
@@ -116,7 +117,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         firstUser.setEmail("first.email@example.com");
         firstUser.setLogin("firstupdate" + System.currentTimeMillis());
         firstUser.setPassword("password123");
-        firstUser.setUserType(UserType.CUSTOMER);
+        firstUser.setUserType(UserTypeTestHelper.createCustomerDTO());
         firstUser.setAddress(createAddressDTO());
         
         mockMvc.perform(post("/api/v1/users")
@@ -129,7 +130,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         secondUser.setEmail("second.email@example.com");
         secondUser.setLogin("secondupdate" + System.currentTimeMillis());
         secondUser.setPassword("password456");
-        secondUser.setUserType(UserType.CUSTOMER);
+        secondUser.setUserType(UserTypeTestHelper.createCustomerDTO());
         secondUser.setAddress(createAddressDTO());
         
         MvcResult secondCreateResult = mockMvc.perform(post("/api/v1/users")
@@ -146,7 +147,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         UpdateUserDTO updateUserDTO = new UpdateUserDTO();
         updateUserDTO.setName("Updated Second User");
         updateUserDTO.setEmail("first.email@example.com");
-        updateUserDTO.setUserType(UserType.OWNER);
+        updateUserDTO.setUserType(UserTypeTestHelper.createOwnerDTO());
         updateUserDTO.setAddress(createAddressDTO());
         
         mockMvc.perform(put("/api/v1/users/" + secondCreatedUser.getId())
@@ -164,7 +165,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         createUserDTO.setEmail("email-validation@example.com");
         createUserDTO.setLogin("emailvalidation" + System.currentTimeMillis());
         createUserDTO.setPassword("password123");
-        createUserDTO.setUserType(UserType.CUSTOMER);
+        createUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         createUserDTO.setAddress(createAddressDTO());
         
         MvcResult createResult = mockMvc.perform(post("/api/v1/users")
@@ -181,7 +182,7 @@ public class UpdateUserIntegrationTest extends BaseUserIntegrationTest {
         UpdateUserDTO updateUserDTO = new UpdateUserDTO();
         updateUserDTO.setName("Updated Name");
         updateUserDTO.setEmail("invalid-email");
-        updateUserDTO.setUserType(UserType.CUSTOMER);
+        updateUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         updateUserDTO.setAddress(createAddressDTO());
         
         mockMvc.perform(put("/api/v1/users/" + createdUser.getId())

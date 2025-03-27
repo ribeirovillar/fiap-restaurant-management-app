@@ -2,7 +2,7 @@ package fiap.restaurant.app.adapter.web.integration.user;
 
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
-import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,7 +22,7 @@ public class DeleteUserIntegrationTest extends BaseUserIntegrationTest {
         userDTO.setEmail("delete-user@example.com");
         userDTO.setLogin("deleteuser" + System.currentTimeMillis());
         userDTO.setPassword("password123");
-        userDTO.setUserType(UserType.CUSTOMER);
+        userDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         userDTO.setAddress(createAddressDTO());
         
         MvcResult createResult = mockMvc.perform(post("/api/v1/users")

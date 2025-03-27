@@ -1,8 +1,8 @@
 package fiap.restaurant.app.core.usecase.user;
 
 import fiap.restaurant.app.core.domain.User;
-import fiap.restaurant.app.core.domain.UserType;
 import fiap.restaurant.app.core.gateway.UserGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FindAllUsersUseCaseImplTest {
@@ -41,7 +42,7 @@ class FindAllUsersUseCaseImplTest {
                 .email("user1@example.com")
                 .login("user1")
                 .password("encodedPassword1")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestHelper.createCustomerDomain())
                 .build();
 
         User user2 = User.builder()
@@ -50,7 +51,7 @@ class FindAllUsersUseCaseImplTest {
                 .email("user2@example.com")
                 .login("user2")
                 .password("encodedPassword2")
-                .userType(UserType.OWNER)
+                .userType(UserTypeTestHelper.createOwnerDomain())
                 .build();
 
         List<User> expectedUsers = Arrays.asList(user1, user2);

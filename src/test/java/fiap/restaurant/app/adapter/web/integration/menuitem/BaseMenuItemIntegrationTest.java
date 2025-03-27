@@ -10,7 +10,7 @@ import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
 import fiap.restaurant.app.configuration.TestSecurityConfig;
 import fiap.restaurant.app.core.domain.CuisineType;
-import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,7 +50,7 @@ public abstract class BaseMenuItemIntegrationTest {
         ownerDTO.setEmail("restaurant.owner" + System.currentTimeMillis() + "@example.com");
         ownerDTO.setLogin("restaurantowner" + System.currentTimeMillis());
         ownerDTO.setPassword("password123");
-        ownerDTO.setUserType(UserType.OWNER);
+        ownerDTO.setUserType(UserTypeTestHelper.createOwnerDTO());
         
         AddressDTO userAddressDTO = new AddressDTO();
         userAddressDTO.setStreet("Test Street");

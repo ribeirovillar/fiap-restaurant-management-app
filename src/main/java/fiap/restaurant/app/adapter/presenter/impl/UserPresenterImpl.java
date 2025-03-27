@@ -2,13 +2,17 @@ package fiap.restaurant.app.adapter.presenter.impl;
 
 import fiap.restaurant.app.adapter.database.jpa.entity.AddressEntity;
 import fiap.restaurant.app.adapter.database.jpa.entity.UserEntity;
+import fiap.restaurant.app.adapter.database.jpa.entity.UserTypeEntity;
 import fiap.restaurant.app.adapter.presenter.AddressPresenter;
 import fiap.restaurant.app.adapter.presenter.UserPresenter;
+import fiap.restaurant.app.adapter.presenter.UserTypePresenter;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UpdateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
+import fiap.restaurant.app.adapter.web.json.usertype.UserTypeResponseDTO;
 import fiap.restaurant.app.core.domain.Address;
 import fiap.restaurant.app.core.domain.User;
+import fiap.restaurant.app.core.domain.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +25,10 @@ public class UserPresenterImpl implements UserPresenter {
 
     @Autowired
     private AddressPresenter addressPresenter;
+    
+    @Autowired
+    private UserTypePresenter userTypePresenter;
+    
     private final DateTimeFormatter dateTimeFormatter_yyyy_MM_dd_HH_mm_ss_11333195168 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
@@ -36,7 +44,14 @@ public class UserPresenterImpl implements UserPresenter {
         user.email(createUserRequestDTO.getEmail());
         user.password(createUserRequestDTO.getPassword());
         user.login(createUserRequestDTO.getLogin());
-        user.userType(createUserRequestDTO.getUserType());
+        
+        if (createUserRequestDTO.getUserType() != null) {
+            UserType userType = UserType.builder()
+                    .id(createUserRequestDTO.getUserType().getId())
+                    .name(createUserRequestDTO.getUserType().getName())
+                    .build();
+            user.userType(userType);
+        }
 
         return user.build();
     }
@@ -55,7 +70,11 @@ public class UserPresenterImpl implements UserPresenter {
         userEntity.email(user.getEmail());
         userEntity.login(user.getLogin());
         userEntity.password(user.getPassword());
-        userEntity.userType(user.getUserType());
+        
+        if (user.getUserType() != null) {
+            UserTypeEntity userTypeEntity = userTypePresenter.mapToEntity(user.getUserType());
+            userEntity.userType(userTypeEntity);
+        }
 
         userEntity.lastModifiedDate(LocalDateTime.now());
 
@@ -79,7 +98,11 @@ public class UserPresenterImpl implements UserPresenter {
         user.email(userEntity.getEmail());
         user.password(userEntity.getPassword());
         user.login(userEntity.getLogin());
-        user.userType(userEntity.getUserType());
+        
+        if (userEntity.getUserType() != null) {
+            UserType userType = userTypePresenter.mapToDomain(userEntity.getUserType());
+            user.userType(userType);
+        }
 
         return user.build();
     }
@@ -97,7 +120,12 @@ public class UserPresenterImpl implements UserPresenter {
         userResponseDTO.setName(user.getName());
         userResponseDTO.setEmail(user.getEmail());
         userResponseDTO.setLogin(user.getLogin());
-        userResponseDTO.setUserType(user.getUserType());
+        
+        if (user.getUserType() != null) {
+            UserTypeResponseDTO userTypeResponseDTO = userTypePresenter.mapToResponseDTO(user.getUserType());
+            userResponseDTO.setUserType(userTypeResponseDTO);
+        }
+        
         userResponseDTO.setLastModifiedDate(user.getLastModifiedDate());
 
         return userResponseDTO;
@@ -115,7 +143,14 @@ public class UserPresenterImpl implements UserPresenter {
         user.name(updateUserDTO.getName());
         user.login(updateUserDTO.getLogin());
         user.email(updateUserDTO.getEmail());
-        user.userType(updateUserDTO.getUserType());
+        
+        if (updateUserDTO.getUserType() != null) {
+            UserType userType = UserType.builder()
+                    .id(updateUserDTO.getUserType().getId())
+                    .name(updateUserDTO.getUserType().getName())
+                    .build();
+            user.userType(userType);
+        }
 
         return user.build();
     }

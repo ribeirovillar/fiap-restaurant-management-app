@@ -3,9 +3,9 @@ package fiap.restaurant.app.core.usecase.restaurant;
 import fiap.restaurant.app.core.domain.CuisineType;
 import fiap.restaurant.app.core.domain.Restaurant;
 import fiap.restaurant.app.core.domain.User;
-import fiap.restaurant.app.core.domain.UserType;
 import fiap.restaurant.app.core.exception.RestaurantNotFoundException;
 import fiap.restaurant.app.core.gateway.RestaurantGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FindRestaurantByIdUseCaseImplTest {
@@ -40,7 +41,7 @@ class FindRestaurantByIdUseCaseImplTest {
                 .id(ownerId)
                 .name("Restaurant Owner")
                 .email("owner@example.com")
-                .userType(UserType.OWNER)
+                .userType(UserTypeTestHelper.createOwnerDomain())
                 .build();
         
         Restaurant expectedRestaurant = Restaurant.builder()

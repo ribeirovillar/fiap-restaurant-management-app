@@ -5,6 +5,7 @@ import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
 import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -27,69 +28,70 @@ public class GetUserIntegrationTest extends BaseUserIntegrationTest {
         user1.setEmail("user.one@example.com");
         user1.setLogin("userone" + System.currentTimeMillis());
         user1.setPassword("password123");
-        user1.setUserType(UserType.CUSTOMER);
-        
+        user1.setUserType(UserTypeTestHelper.createCustomerDTO());
+
         AddressDTO address1 = createAddressDTO();
         address1.setStreet("First Street");
         address1.setCity("First City");
         address1.setState("FS");
         user1.setAddress(address1);
-        
+
         mockMvc.perform(post("/api/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user1)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user1)))
                 .andExpect(status().isCreated());
-        
+
         CreateUserDTO user2 = new CreateUserDTO();
         user2.setName("User Two");
         user2.setEmail("user.two@example.com");
         user2.setLogin("usertwo" + System.currentTimeMillis());
         user2.setPassword("password456");
-        user2.setUserType(UserType.OWNER);
-        
+        user2.setUserType(UserTypeTestHelper.createOwnerDTO());
+
         AddressDTO address2 = createAddressDTO();
         address2.setStreet("Second Street");
         address2.setCity("Second City");
         address2.setState("SS");
         user2.setAddress(address2);
-        
+
         mockMvc.perform(post("/api/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user2)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user2)))
                 .andExpect(status().isCreated());
-        
+
         MvcResult result = mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
                 .andReturn();
-        
+
         String responseBody = result.getResponse().getContentAsString();
-        List<UserResponseDTO> userList = objectMapper.readValue(responseBody, new TypeReference<List<UserResponseDTO>>() {});
-        
+        List<UserResponseDTO> userList = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
+
         assertFalse(userList.isEmpty());
-        
+
         assertTrue(userList.size() >= 2);
-        
+
         boolean foundUser1 = false;
         boolean foundUser2 = false;
-        
+
         for (UserResponseDTO user : userList) {
             if (user.getEmail().equals(user1.getEmail())) {
                 foundUser1 = true;
                 assertEquals(user1.getName(), user.getName());
                 assertEquals(user1.getLogin(), user.getLogin());
-                assertEquals(user1.getUserType(), user.getUserType());
+                assertEquals(user1.getUserType().getName(), user.getUserType().getName());
             } else if (user.getEmail().equals(user2.getEmail())) {
                 foundUser2 = true;
                 assertEquals(user2.getName(), user.getName());
                 assertEquals(user2.getLogin(), user.getLogin());
-                assertEquals(user2.getUserType(), user.getUserType());
+                assertEquals(user2.getUserType().getName(), user.getUserType().getName());
             }
         }
-        
+
         assertTrue(foundUser1, "Usuário 1 não encontrado na lista");
         assertTrue(foundUser2, "Usuário 2 não encontrado na lista");
     }
-    
+
     @Test
     public void getUserById_WithValidId_ReturnsUser() throws Exception {
         CreateUserDTO userDTO = new CreateUserDTO();
@@ -97,35 +99,35 @@ public class GetUserIntegrationTest extends BaseUserIntegrationTest {
         userDTO.setEmail("getbyid@example.com");
         userDTO.setLogin("getbyid" + System.currentTimeMillis());
         userDTO.setPassword("password123");
-        userDTO.setUserType(UserType.CUSTOMER);
+        userDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         userDTO.setAddress(createAddressDTO());
-        
+
         MvcResult createResult = mockMvc.perform(post("/api/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(userDTO)))
                 .andExpect(status().isCreated())
                 .andReturn();
-        
+
         UserResponseDTO createdUser = objectMapper.readValue(
                 createResult.getResponse().getContentAsString(),
                 UserResponseDTO.class
         );
-        
+
         UUID userId = createdUser.getId();
-        
+
         mockMvc.perform(get("/api/v1/users/" + userId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userId.toString()))
                 .andExpect(jsonPath("$.name").value(userDTO.getName()))
                 .andExpect(jsonPath("$.email").value(userDTO.getEmail()))
                 .andExpect(jsonPath("$.login").value(userDTO.getLogin()))
-                .andExpect(jsonPath("$.userType").value(userDTO.getUserType().toString()));
+                .andExpect(jsonPath("$.userType.name").value(UserType.CUSTOMER));
     }
-    
+
     @Test
     public void getUserById_WithInvalidId_ReturnsNotFound() throws Exception {
         UUID randomId = UUID.randomUUID();
-        
+
         mockMvc.perform(get("/api/v1/users/" + randomId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("User not found with id: " + randomId));

@@ -53,7 +53,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             EmailFormatException.class,
-            IllegalArgumentException.class
+            IllegalArgumentException.class,
+            BusinessException.class
     })
     public ResponseEntity<ErrorResponseDto> handleBadRequest(RuntimeException ex, WebRequest request) {
         return buildErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
@@ -68,7 +69,7 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .findFirst()
                 .orElse("Validation error");
-        
+
         return buildErrorResponse(new Exception(errorMessage), request, HttpStatus.BAD_REQUEST);
     }
 

@@ -1,7 +1,7 @@
 package fiap.restaurant.app.adapter.web.json.user;
 
 import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
-import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.adapter.web.json.usertype.UserTypeResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,5 @@ public class UpdateUserDTO {
     private String email;
     private String login;
     private AddressDTO address;
-    private UserType userType;
+    private UserTypeResponseDTO userType;
 }

@@ -4,12 +4,12 @@ import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.LoginRequestDTO;
 import fiap.restaurant.app.adapter.web.json.user.UpdatePasswordDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
-import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +26,7 @@ public class UpdatePasswordIntegrationTest extends BaseUserIntegrationTest {
         createUserDTO.setEmail("pwd-update@example.com");
         createUserDTO.setLogin(login);
         createUserDTO.setPassword(originalPassword);
-        createUserDTO.setUserType(UserType.CUSTOMER);
+        createUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         createUserDTO.setAddress(createAddressDTO());
         
         MvcResult createResult = mockMvc.perform(post("/api/v1/users")
@@ -86,7 +86,7 @@ public class UpdatePasswordIntegrationTest extends BaseUserIntegrationTest {
         createUserDTO.setEmail("invalid-pwd@example.com");
         createUserDTO.setLogin(login);
         createUserDTO.setPassword(originalPassword);
-        createUserDTO.setUserType(UserType.CUSTOMER);
+        createUserDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
         createUserDTO.setAddress(createAddressDTO());
         
         mockMvc.perform(post("/api/v1/users")

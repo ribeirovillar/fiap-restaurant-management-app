@@ -1,3 +1,9 @@
+-- Create user_types table
+CREATE TABLE IF NOT EXISTS user_types (
+    id UUID PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE
+);
+
 -- Create users table
 CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY,
@@ -6,7 +12,8 @@ CREATE TABLE IF NOT EXISTS users (
     login VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     last_modified_date TIMESTAMP NOT NULL,
-    user_type SMALLINT
+    user_type_id UUID,
+    CONSTRAINT fk_user_type FOREIGN KEY (user_type_id) REFERENCES user_types(id)
 );
 
 -- Create addresses table

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.configuration.TestSecurityConfig;
-import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +32,7 @@ public abstract class BaseUserIntegrationTest {
         userDTO.setEmail(email);
         userDTO.setLogin(login + System.currentTimeMillis());
         userDTO.setPassword("password123");
-        userDTO.setUserType(UserType.CUSTOMER);
+        userDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
 
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setStreet("Test Street");

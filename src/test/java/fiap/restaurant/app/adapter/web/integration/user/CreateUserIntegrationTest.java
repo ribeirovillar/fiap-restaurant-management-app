@@ -4,6 +4,7 @@ import fiap.restaurant.app.adapter.web.json.common.AddressDTO;
 import fiap.restaurant.app.adapter.web.json.user.CreateUserDTO;
 import fiap.restaurant.app.adapter.web.json.user.UserResponseDTO;
 import fiap.restaurant.app.core.domain.UserType;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,7 +24,7 @@ public class CreateUserIntegrationTest extends BaseUserIntegrationTest {
         userDTO.setEmail("testuser@example.com");
         userDTO.setLogin("testuser" + System.currentTimeMillis());
         userDTO.setPassword("password123");
-        userDTO.setUserType(UserType.CUSTOMER);
+        userDTO.setUserType(UserTypeTestHelper.createCustomerDTO());
 
         AddressDTO addressDTO = createAddressDTO();
         userDTO.setAddress(addressDTO);
@@ -35,7 +36,7 @@ public class CreateUserIntegrationTest extends BaseUserIntegrationTest {
                 .andExpect(jsonPath("$.name").value(userDTO.getName()))
                 .andExpect(jsonPath("$.email").value(userDTO.getEmail()))
                 .andExpect(jsonPath("$.login").value(userDTO.getLogin()))
-                .andExpect(jsonPath("$.userType").value(userDTO.getUserType().toString()))
+                .andExpect(jsonPath("$.userType.name").value(UserType.CUSTOMER))
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andReturn();
 
@@ -47,7 +48,7 @@ public class CreateUserIntegrationTest extends BaseUserIntegrationTest {
         assertEquals(userDTO.getName(), responseDTO.getName());
         assertEquals(userDTO.getEmail(), responseDTO.getEmail());
         assertEquals(userDTO.getLogin(), responseDTO.getLogin());
-        assertEquals(userDTO.getUserType(), responseDTO.getUserType());
+        assertEquals(userDTO.getUserType().getName(), responseDTO.getUserType().getName());
 
         assertNotNull(responseDTO.getAddress());
         assertEquals(addressDTO.getStreet(), responseDTO.getAddress().getStreet());
@@ -78,7 +79,7 @@ public class CreateUserIntegrationTest extends BaseUserIntegrationTest {
         firstUser.setEmail("firstuser@example.com");
         firstUser.setLogin(sharedLogin);
         firstUser.setPassword("password123");
-        firstUser.setUserType(UserType.CUSTOMER);
+        firstUser.setUserType(UserTypeTestHelper.createCustomerDTO());
         firstUser.setAddress(createAddressDTO());
 
         mockMvc.perform(post("/api/v1/users")
@@ -91,7 +92,7 @@ public class CreateUserIntegrationTest extends BaseUserIntegrationTest {
         secondUser.setEmail("seconduser@example.com");
         secondUser.setLogin(sharedLogin);
         secondUser.setPassword("password456");
-        secondUser.setUserType(UserType.OWNER);
+        secondUser.setUserType(UserTypeTestHelper.createOwnerDTO());
         secondUser.setAddress(createAddressDTO());
 
         mockMvc.perform(post("/api/v1/users")
@@ -111,7 +112,7 @@ public class CreateUserIntegrationTest extends BaseUserIntegrationTest {
         firstUser.setEmail(sharedEmail);
         firstUser.setLogin("firstlogin" + System.currentTimeMillis());
         firstUser.setPassword("password123");
-        firstUser.setUserType(UserType.CUSTOMER);
+        firstUser.setUserType(UserTypeTestHelper.createCustomerDTO());
         firstUser.setAddress(createAddressDTO());
 
         mockMvc.perform(post("/api/v1/users")
@@ -124,7 +125,7 @@ public class CreateUserIntegrationTest extends BaseUserIntegrationTest {
         secondUser.setEmail(sharedEmail);
         secondUser.setLogin("secondlogin" + System.currentTimeMillis());
         secondUser.setPassword("password456");
-        secondUser.setUserType(UserType.OWNER);
+        secondUser.setUserType(UserTypeTestHelper.createOwnerDTO());
         secondUser.setAddress(createAddressDTO());
 
         mockMvc.perform(post("/api/v1/users")

@@ -3,6 +3,7 @@ package fiap.restaurant.app.core.usecase.restaurant;
 import fiap.restaurant.app.core.domain.*;
 import fiap.restaurant.app.core.exception.UnauthorizedOperationException;
 import fiap.restaurant.app.core.gateway.RestaurantGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,6 +37,7 @@ class CreateRestaurantUseCaseImplTest {
     void shouldCreateRestaurantSuccessfully() {
         UUID restaurantId = UUID.randomUUID();
         UUID ownerId = UUID.randomUUID();
+        UserType ownerType = UserTypeTestHelper.createOwnerDomain();
         
         User owner = User.builder()
                 .id(ownerId)
@@ -43,7 +45,7 @@ class CreateRestaurantUseCaseImplTest {
                 .email("owner@example.com")
                 .login("owner123")
                 .password("password123")
-                .userType(UserType.OWNER)
+                .userType(ownerType)
                 .build();
         
         List<BusinessHours> businessHours = new ArrayList<>();
@@ -89,10 +91,12 @@ class CreateRestaurantUseCaseImplTest {
     
     @Test
     void shouldThrowExceptionWhenRestaurantNameIsInvalid() {
+        UserType ownerType = UserTypeTestHelper.createOwnerDomain();
+        
         User owner = User.builder()
                 .id(UUID.randomUUID())
                 .name("Restaurant Owner")
-                .userType(UserType.OWNER)
+                .userType(ownerType)
                 .build();
         
         Restaurant restaurant = Restaurant.builder()
@@ -116,10 +120,12 @@ class CreateRestaurantUseCaseImplTest {
     
     @Test
     void shouldThrowExceptionWhenOwnerIsNotOwnerType() {
+        UserType customerType = UserTypeTestHelper.createCustomerDomain();
+        
         User owner = User.builder()
                 .id(UUID.randomUUID())
                 .name("Customer User")
-                .userType(UserType.CUSTOMER)
+                .userType(customerType)
                 .build();
         
         Restaurant restaurant = Restaurant.builder()
@@ -143,10 +149,12 @@ class CreateRestaurantUseCaseImplTest {
     
     @Test
     void shouldThrowExceptionWhenBusinessHoursAreInvalid() {
+        UserType ownerType = UserTypeTestHelper.createOwnerDomain();
+        
         User owner = User.builder()
                 .id(UUID.randomUUID())
                 .name("Restaurant Owner")
-                .userType(UserType.OWNER)
+                .userType(ownerType)
                 .build();
         
         Restaurant restaurant = Restaurant.builder()
@@ -170,10 +178,12 @@ class CreateRestaurantUseCaseImplTest {
     
     @Test
     void shouldThrowExceptionWhenRequiredFieldsAreMissing() {
+        UserType ownerType = UserTypeTestHelper.createOwnerDomain();
+        
         User owner = User.builder()
                 .id(UUID.randomUUID())
                 .name("Restaurant Owner")
-                .userType(UserType.OWNER)
+                .userType(ownerType)
                 .build();
         
         Restaurant restaurant = Restaurant.builder()

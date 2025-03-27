@@ -1,9 +1,9 @@
 package fiap.restaurant.app.core.usecase.user;
 
 import fiap.restaurant.app.core.domain.User;
-import fiap.restaurant.app.core.domain.UserType;
 import fiap.restaurant.app.core.exception.UserNotFoundException;
 import fiap.restaurant.app.core.gateway.UserGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +41,7 @@ class DeleteUserUseCaseImplTest {
                 .email("test@example.com")
                 .login("testuser")
                 .password("encodedPassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestHelper.createCustomerDomain())
                 .build();
 
         doNothing().when(userGateway).delete(userId);

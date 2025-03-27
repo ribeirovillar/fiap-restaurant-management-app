@@ -31,7 +31,8 @@ public class Restaurant {
     }
     
     public void setOwner(User owner) {
-        if (owner != null && owner.getUserType() != UserType.OWNER) {
+        if (owner != null && owner.getUserType() != null && 
+            !UserType.OWNER.equals(owner.getUserType().getName())) {
             throw new UnauthorizedOperationException("Restaurant owner must have OWNER type");
         }
         this.owner = owner;
@@ -81,7 +82,7 @@ public class Restaurant {
             throw new IllegalArgumentException("Owner is required");
         }
         
-        if (owner.getUserType() != UserType.OWNER) {
+        if (owner.getUserType() == null || !UserType.OWNER.equals(owner.getUserType().getName())) {
             throw new UnauthorizedOperationException("Only OWNER users can create restaurants");
         }
         
@@ -104,7 +105,7 @@ public class Restaurant {
         }
         
         if (owner != null) {
-            if (owner.getUserType() != UserType.OWNER) {
+            if (owner.getUserType() == null || !UserType.OWNER.equals(owner.getUserType().getName())) {
                 throw new UnauthorizedOperationException("Only OWNER users can update restaurants");
             }
             
@@ -130,7 +131,7 @@ public class Restaurant {
             throw new IllegalArgumentException("Owner is required for deletion");
         }
         
-        if (owner.getUserType() != UserType.OWNER) {
+        if (owner.getUserType() == null || !UserType.OWNER.equals(owner.getUserType().getName())) {
             throw new UnauthorizedOperationException("Only OWNER users can delete restaurants");
         }
     }

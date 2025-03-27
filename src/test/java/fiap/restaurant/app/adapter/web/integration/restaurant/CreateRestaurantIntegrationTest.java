@@ -45,7 +45,7 @@ public class CreateRestaurantIntegrationTest extends BaseRestaurantIntegrationTe
         assertEquals(ownerId, responseDTO.getOwnerId());
         assertNotNull(responseDTO.getBusinessHours());
         assertFalse(responseDTO.getBusinessHours().isEmpty());
-        assertEquals(2, responseDTO.getBusinessHours().size());
+        assertEquals(3, responseDTO.getBusinessHours().size());
     }
 
     @Test

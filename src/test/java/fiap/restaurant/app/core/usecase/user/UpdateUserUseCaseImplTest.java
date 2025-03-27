@@ -7,6 +7,7 @@ import fiap.restaurant.app.core.exception.DuplicatedDataException;
 import fiap.restaurant.app.core.exception.EmailFormatException;
 import fiap.restaurant.app.core.exception.UserNotFoundException;
 import fiap.restaurant.app.core.gateway.UserGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,14 +46,14 @@ class UpdateUserUseCaseImplTest {
                 .email("old@example.com")
                 .login("oldlogin")
                 .password("encodedPassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestHelper.createCustomerDomain())
                 .build();
 
         User userUpdate = User.builder()
                 .name("New Name")
                 .email("new@example.com")
                 .login("newlogin")
-                .userType(UserType.OWNER)
+                .userType(UserTypeTestHelper.createOwnerDomain())
                 .address(Address.builder()
                         .street("New Street")
                         .city("New City")
@@ -75,7 +76,7 @@ class UpdateUserUseCaseImplTest {
         assertEquals("New Name", result.getName());
         assertEquals("new@example.com", result.getEmail());
         assertEquals("newlogin", result.getLogin());
-        assertEquals(UserType.OWNER, result.getUserType());
+        assertEquals(UserType.OWNER, result.getUserType().getName());
         assertNotNull(result.getAddress());
         assertEquals("New Street", result.getAddress().getStreet());
 
@@ -95,7 +96,7 @@ class UpdateUserUseCaseImplTest {
                 .email("old@example.com")
                 .login("oldlogin")
                 .password("encodedPassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestHelper.createCustomerDomain())
                 .build();
 
         User userUpdate = User.builder()
@@ -125,7 +126,7 @@ class UpdateUserUseCaseImplTest {
                 .email("old@example.com")
                 .login("oldlogin")
                 .password("encodedPassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestHelper.createCustomerDomain())
                 .build();
 
         User userUpdate = User.builder()
@@ -156,7 +157,7 @@ class UpdateUserUseCaseImplTest {
                 .email("old@example.com")
                 .login("oldlogin")
                 .password("encodedPassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestHelper.createCustomerDomain())
                 .build();
 
         User userUpdate = User.builder()

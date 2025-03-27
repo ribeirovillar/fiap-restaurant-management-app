@@ -4,6 +4,7 @@ import fiap.restaurant.app.core.domain.User;
 import fiap.restaurant.app.core.domain.UserType;
 import fiap.restaurant.app.core.exception.UserNotFoundException;
 import fiap.restaurant.app.core.gateway.UserGateway;
+import fiap.restaurant.app.util.UserTypeTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +39,7 @@ class FindUserByIdUseCaseImplTest {
                 .email("test@example.com")
                 .login("testuser")
                 .password("encodedPassword")
-                .userType(UserType.CUSTOMER)
+                .userType(UserTypeTestHelper.createCustomerDomain())
                 .build();
 
         when(userGateway.findById(userId)).thenReturn(Optional.of(expectedUser));
@@ -51,7 +52,7 @@ class FindUserByIdUseCaseImplTest {
         assertEquals("test@example.com", result.getEmail());
         assertEquals("testuser", result.getLogin());
         assertEquals("encodedPassword", result.getPassword());
-        assertEquals(UserType.CUSTOMER, result.getUserType());
+        assertEquals(UserType.CUSTOMER, result.getUserType().getName());
 
         verify(userGateway).findById(userId);
     }
