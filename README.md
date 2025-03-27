@@ -1,7 +1,7 @@
 # Restaurant Management Application
 
 ## Overview
-The Restaurant Management Application is a modern, scalable backend system for restaurant operations management. Built with a clean architecture approach, the application offers comprehensive restaurant management functionalities including user authentication, restaurant registration, cuisine type categorization, and menu item management, providing a complete solution for restaurant businesses.
+The Restaurant Management Application is a modern, scalable backend system for restaurant operations management. Built with a clean architecture approach, the application offers comprehensive restaurant management functionalities including user management with multiple user types, authentication, restaurant registration, cuisine type categorization, menu item management, and business hours management, providing a complete solution for restaurant businesses.
 
 ## Technologies
 
@@ -18,7 +18,6 @@ The Restaurant Management Application is a modern, scalable backend system for r
 - **JUnit 5**: Unit and integration testing framework
 - **Mockito**: Mocking framework for tests
 - **Lombok**: Reduces boilerplate code
-- **MapStruct**: Object mapping between layers
 - **Swagger/OpenAPI**: API documentation
 - **BCrypt**: Password encryption
 - **Docker & Docker Compose**: Containerization and orchestration
@@ -28,10 +27,11 @@ The Restaurant Management Application is a modern, scalable backend system for r
 The application follows Clean Architecture principles, with a clear separation of concerns:
 
 ### Core Layer
-- **Domain**: Contains business entities (User, Restaurant, MenuItem, etc.) that encapsulate enterprise-wide business rules
+- **Domain**: Contains business entities (User, UserType, Restaurant, MenuItem, etc.) that encapsulate enterprise-wide business rules
 - **Use Cases**: Contains application-specific business rules for operations like creating restaurants, managing menu items
 - **Controllers**: Orchestrates the flow of data to and from use cases
 - **Gateways**: Interfaces that define data persistence contracts
+- **Exceptions**: Business exception handling
 
 ### Adapter Layer
 - **Web**: REST controllers and JSON DTOs
@@ -55,22 +55,36 @@ src/
 │   │   │   │       ├── repository/
 │   │   │   │       └── gateway/
 │   │   │   ├── presenter/
-│   │   │   │   └── dto/
+│   │   │   │   └── impl/
 │   │   │   └── web/
-│   │   │       └── json/
-│   │   │           ├── menuitem/
-│   │   │           ├── restaurant/
-│   │   │           └── user/
-│   │   ├── config/
+│   │   │       ├── json/
+│   │   │       │   ├── menuitem/
+│   │   │       │   ├── restaurant/
+│   │   │       │   ├── user/
+│   │   │       │   └── usertype/
+│   │   │       ├── MenuItemApiController.java
+│   │   │       ├── RestaurantApiController.java
+│   │   │       ├── UserApiController.java
+│   │   │       └── UserTypeApiController.java
+│   │   ├── configuration/
+│   │   │   └── GlobalExceptionHandler.java
 │   │   ├── core/
-│   │   │   ├── controller/
 │   │   │   ├── domain/
+│   │   │   │   ├── Address.java
+│   │   │   │   ├── BusinessHours.java
+│   │   │   │   ├── CuisineType.java
+│   │   │   │   ├── MenuItem.java
+│   │   │   │   ├── Restaurant.java
+│   │   │   │   ├── User.java
+│   │   │   │   └── UserType.java
 │   │   │   ├── exception/
+│   │   │   │   └── BusinessException.java
 │   │   │   ├── gateway/
 │   │   │   └── usecase/
 │   │   │       ├── menuitem/
 │   │   │       ├── restaurant/
-│   │   │       └── user/
+│   │   │       ├── user/
+│   │   │       └── usertype/
 │   │   └── AppApplication.java
 │   └── resources/
 │       ├── db/migration/
@@ -81,7 +95,13 @@ src/
     │   ├── adapter/
     │   │   └── web/
     │   │       └── integration/
+    │   │           ├── menuitem/
+    │   │           ├── restaurant/
+    │   │           ├── user/
+    │   │           └── usertype/
     │   ├── core/
+    │   │   ├── domain/
+    │   │   └── usecase/
     │   └── config/
     └── resources/
         └── application-test.properties
@@ -101,7 +121,7 @@ The easiest way to get started is using Docker Compose, which will set up both t
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/fiap-restaurant-management-app.git
+git clone https://github.com/ribeirovillar/fiap-restaurant-management-app.git
 cd fiap-restaurant-management-app
 ```
 
@@ -148,7 +168,7 @@ spring.datasource.password=postgres
 #### Building and Running the Application
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/fiap-restaurant-management-app.git
+git clone https://github.com/ribeirovillar/fiap-restaurant-management-app.git
 cd fiap-restaurant-management-app
 ```
 
@@ -173,7 +193,8 @@ mvn test
 
 # Run specific test classes
 mvn test -Dtest="LoginIntegrationTest"
-mvn test -Dtest="FindRestaurantsByCuisineTypeIntegrationTest"
+mvn test -Dtest="UserTypeTest"
+mvn test -Dtest="CreateUserTypeUseCaseImplTest"
 ```
 
 ## API Endpoints
@@ -188,6 +209,14 @@ mvn test -Dtest="FindRestaurantsByCuisineTypeIntegrationTest"
 ### Authentication
 - **POST /api/v1/users/login**: Validate user credentials
 - **POST /api/v1/users/password**: Update user password
+
+### User Type Management
+- **POST /api/v1/user-types**: Create a new user type
+- **GET /api/v1/user-types**: Get all user types
+- **GET /api/v1/user-types/{id}**: Get user type by ID
+- **GET /api/v1/user-types/name/{name}**: Get user type by name
+- **PUT /api/v1/user-types/{id}**: Update a user type
+- **DELETE /api/v1/user-types/{id}**: Delete a user type
 
 ### Restaurant Management
 - **POST /api/v1/restaurants**: Create a new restaurant
@@ -207,6 +236,28 @@ mvn test -Dtest="FindRestaurantsByCuisineTypeIntegrationTest"
 - **PUT /api/v1/restaurants/{restaurantId}/menu-items/{id}**: Update a menu item
 - **DELETE /api/v1/restaurants/{restaurantId}/menu-items/{id}**: Delete a menu item
 
+## Key Features
+
+### User and Authentication Management
+- User registration and management with secure password storage using BCrypt
+- Multiple user types (CUSTOMER, OWNER, etc.) for role-based access control
+- Login authentication and password update functionality
+
+### Restaurant Management
+- Complete restaurant information management including name, cuisine type, address, and business hours
+- Support for searching restaurants by name, owner, or cuisine type
+- Flexible restaurant update and deletion operations
+
+### Menu Management
+- Comprehensive menu item management for restaurants
+- Menu items include name, description, price, and optional image URL
+- Add, update, and remove menu items from restaurant menus
+
+### Exception Handling
+- Robust business exception handling for validation errors
+- Global exception handler for consistent API responses
+- Proper HTTP status codes for different types of errors (400, 404, 500, etc.)
+
 ## Postman Collection
 
 A Postman collection is included in the repository to help you test the API endpoints. The collection includes all available endpoints with pre-configured request bodies and parameters for user, restaurant, and menu item operations.
@@ -222,52 +273,32 @@ A Postman collection is included in the repository to help you test the API endp
 2. The collection uses environment variables:
    - `baseUrl`: Default is set to `http://localhost:8080` 
    - `userId`: Used to store a user ID for API calls that require it
+   - `userTypeId`: Used for user type operations
    - `ownerId`: Used for restaurant creation and management
    - `restaurantId`: Used for restaurant-specific operations
    - `menuItemId`: Used for menu item operations
 
 3. Workflow for testing:
-   - First, use the "Create User" request to create a new user (restaurant owner)
-   - Copy the returned user ID into the `ownerId` variable
+   - Create a user type using the "Create User Type" request
+   - Create a user with the appropriate user type using the "Create User" request
    - Create a restaurant using the "Create Restaurant" request
-   - Copy the restaurant ID into the `restaurantId` variable
-   - Now you can create and manage menu items for that restaurant
-
-### Testing Restaurant and Menu Operations
-1. Create a user with OWNER type using the "Create User" request
-2. Create a restaurant with the "Create Restaurant" request
-3. Add menu items using the "Create Menu Item" request
-4. Test searching restaurants by cuisine type or listing menu items
+   - Create menu items for the restaurant using the "Create Menu Item" request
 
 ## Development Guidelines
 
 ### Adding a New Feature
 1. Define the domain entity in the core layer
 2. Create use case interfaces and implementations
-3. Update or create controller methods
-4. Implement gateways for data persistence
-5. Create adapters for web and database interaction
-6. Write unit and integration tests
+3. Create gateway interfaces
+4. Implement adapters for web, database, and presenter layers
+5. Write comprehensive unit and integration tests
 
-### Testing Strategy
-- Unit tests for use cases and business logic
-- Integration tests for API endpoints
-- In-memory H2 database for test environment
-
-## Docker Configuration
-The project includes Docker configuration files:
-- **Dockerfile**: Multi-stage build process for the application
-- **docker-compose.yml**: Orchestrates the PostgreSQL database and application containers
-
-### Docker Image Structure
-- Build stage: Uses Maven to compile and package the application
-- Runtime stage: Uses minimal JRE image to run the application
-- Exposed port: 8080
-- Health check: Ensures database is ready before starting the application
-
-## Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a pull request
+### Adding a New Domain Entity
+1. Create the entity class in the core/domain package
+2. Define use cases for CRUD operations
+3. Create gateway interfaces for persistence
+4. Implement JPA entity and repository
+5. Create presenter implementation
+6. Create API controller and DTOs
+7. Write unit tests for the domain entity and use cases
+8. Write integration tests for API endpoints
